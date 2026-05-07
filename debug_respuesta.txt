@@ -1,0 +1,188 @@
+```json
+{
+  "boletin_info": {
+    "titulo": "Cine en Cifras",
+    "edicion": 30,
+    "fecha_publicacion": "Abril 2026",
+    "periodo_analizado": "2010 - 2025",
+    "base_precios_constantes": "Diciembre 2018"
+  },
+  "resumen_ejecutivo_2025": {
+    "asistencia_total_millones": 49.55,
+    "variacion_asistencia_vs_2024_porcentaje": -0.15,
+    "asistencia_primer_trimestre_2026_millones": 9.5,
+    "estrenos_largometrajes_colombianos": 77,
+    "distribucion_generos_colombianos": {
+      "documentales": 33,
+      "dramas": 26,
+      "comedias": 8,
+      "suspenso": 5,
+      "terror": 2,
+      "accion": 1,
+      "western": 1,
+      "falso_documental": 1
+    },
+    "empresas_distribuidoras_colombianas": 25
+  },
+  "asistencia_total_y_estrenos": [
+    {"año": 2010, "espectadores_millones": 33.66, "estrenos_totales": 206},
+    {"año": 2011, "espectadores_millones": 38.01, "estrenos_totales": 206},
+    {"año": 2012, "espectadores_millones": 40.85, "estrenos_totales": 213},
+    {"año": 2013, "espectadores_millones": 43.28, "estrenos_totales": 244},
+    {"año": 2014, "espectadores_millones": 46.53, "estrenos_totales": 274},
+    {"año": 2015, "espectadores_millones": 58.80, "estrenos_totales": 338},
+    {"año": 2016, "espectadores_millones": 61.44, "estrenos_totales": 312},
+    {"año": 2017, "espectadores_millones": 62.61, "estrenos_totales": 314},
+    {"año": 2018, "espectadores_millones": 64.09, "estrenos_totales": 360},
+    {"año": 2019, "espectadores_millones": 73.11, "estrenos_totales": 352},
+    {"año": 2020, "espectadores_millones": 12.61, "estrenos_totales": 127},
+    {"año": 2021, "espectadores_millones": 27.81, "estrenos_totales": 213},
+    {"año": 2022, "espectadores_millones": 42.19, "estrenos_totales": 279},
+    {"año": 2023, "espectadores_millones": 53.87, "estrenos_totales": 328},
+    {"año": 2024, "espectadores_millones": 49.63, "estrenos_totales": 396},
+    {"año": 2025, "espectadores_millones": 49.55, "estrenos_totales": 408}
+  ],
+  "asistencia_cine_colombiano": [
+    {"año": 2010, "espectadores_millones": 1.53, "estrenos_colombianos": 10, "participacion_mercado_porcentaje": 4.5},
+    {"año": 2011, "espectadores_millones": 2.99, "estrenos_colombianos": 18, "participacion_mercado_porcentaje": 7.9},
+    {"año": 2012, "espectadores_millones": 3.39, "estrenos_colombianos": 23, "participacion_mercado_porcentaje": 8.3},
+    {"año": 2013, "espectadores_millones": 2.17, "estrenos_colombianos": 17, "participacion_mercado_porcentaje": 5.0},
+    {"año": 2014, "espectadores_millones": 2.21, "estrenos_colombianos": 28, "participacion_mercado_porcentaje": 4.7},
+    {"año": 2015, "espectadores_millones": 3.45, "estrenos_colombianos": 36, "participacion_mercado_porcentaje": 5.9},
+    {"año": 2016, "espectadores_millones": 4.79, "estrenos_colombianos": 41, "participacion_mercado_porcentaje": 7.8},
+    {"año": 2017, "espectadores_millones": 3.73, "estrenos_colombianos": 44, "participacion_mercado_porcentaje": 6.0},
+    {"año": 2018, "espectadores_millones": 2.18, "estrenos_colombianos": 41, "participacion_mercado_porcentaje": 3.4},
+    {"año": 2019, "espectadores_millones": 2.52, "estrenos_colombianos": 48, "participacion_mercado_porcentaje": 3.4},
+    {"año": 2020, "espectadores_millones": 0.85, "estrenos_colombianos": 27, "participacion_mercado_porcentaje": 6.8},
+    {"año": 2021, "espectadores_millones": 0.48, "estrenos_colombianos": 30, "participacion_mercado_porcentaje": 1.7},
+    {"año": 2022, "espectadores_millones": 1.33, "estrenos_colombianos": 57, "participacion_mercado_porcentaje": 3.2},
+    {"año": 2023, "espectadores_millones": 0.64, "estrenos_colombianos": 72, "participacion_mercado_porcentaje": 1.2},
+    {"año": 2024, "espectadores_millones": 1.18, "estrenos_colombianos": 79, "participacion_mercado_porcentaje": 2.4},
+    {"año": 2025, "espectadores_millones": 0.75, "estrenos_colombianos": 77, "participacion_mercado_porcentaje": 1.5}
+  ],
+  "asistencia_por_ciudades_millones": {
+    "Bogota": [14.91, 16.16, 17.20, 17.86, 18.10, 20.63, 20.73, 20.77, 21.04, 23.62, 4.09, 8.22, 13.20, 16.59, 15.47, 15.41],
+    "Resto_del_pais": [9.43, 11.09, 12.35, 13.32, 15.57, 22.16, 24.01, 25.48, 26.26, 30.26, 5.12, 12.36, 17.60, 22.70, 20.71, 20.39],
+    "Cali": [3.34, 3.83, 4.16, 4.32, 4.50, 5.49, 5.76, 5.70, 5.87, 6.44, 1.17, 2.19, 3.56, 4.50, 4.07, 4.07],
+    "Medellin": [3.59, 3.82, 3.83, 3.91, 4.06, 5.20, 5.35, 5.61, 5.87, 7.16, 1.28, 3.08, 4.46, 5.62, 5.19, 5.39],
+    "Bucaramanga": [0.91, 1.46, 1.56, 2.01, 2.18, 2.77, 2.86, 2.82, 2.87, 3.16, 0.54, 1.02, 1.83, 2.37, 2.21, 2.24],
+    "Barranquilla": [1.47, 1.65, 1.75, 1.86, 2.13, 2.55, 2.73, 2.24, 2.19, 2.47, 0.40, 0.93, 1.54, 2.09, 1.98, 2.05]
+  },
+  "indice_asistencia_habitante": [
+    {"año": 2010, "indice": 0.76}, {"año": 2011, "indice": 0.85}, {"año": 2012, "indice": 0.91},
+    {"año": 2013, "indice": 0.95}, {"año": 2014, "indice": 1.01}, {"año": 2015, "indice": 1.22},
+    {"año": 2016, "indice": 1.31}, {"año": 2017, "indice": 1.32}, {"año": 2018, "indice": 1.33},
+    {"año": 2019, "indice": 1.48}, {"año": 2020, "indice": 0.25}, {"año": 2021, "indice": 0.54},
+    {"año": 2022, "indice": 0.82}, {"año": 2023, "indice": 1.03}, {"año": 2024, "indice": 0.94},
+    {"año": 2025, "indice": 0.93}
+  ],
+  "participacion_asistencia_por_region_2025": {
+    "Estados_Unidos": 87.9,
+    "Asia": 5.0,
+    "Europa": 4.0,
+    "Colombia": 1.5,
+    "Resto_del_mundo": 0.9,
+    "Latinoamerica": 0.7
+  },
+  "top_10_paises_origen_espectadores_2025": [
+    {"pais": "Estados Unidos", "espectadores": 44669253},
+    {"pais": "Japón", "espectadores": 1853285},
+    {"pais": "Colombia", "espectadores": 917080},
+    {"pais": "Francia", "espectadores": 388346},
+    {"pais": "Letonia", "espectadores": 335770},
+    {"pais": "Reino Unido", "espectadores": 275979},
+    {"pais": "China", "espectadores": 148346},
+    {"pais": "Alemania", "espectadores": 110318},
+    {"pais": "Corea del Sur", "espectadores": 107185},
+    {"pais": "Australia", "espectadores": 88713}
+  ],
+  "taquilla_total_millones_cop_constantes": [
+    {"año": 2010, "valor": 351378}, {"año": 2011, "valor": 385934}, {"año": 2012, "valor": 419955},
+    {"año": 2013, "valor": 442432}, {"año": 2014, "valor": 465665}, {"año": 2015, "valor": 558994},
+    {"año": 2016, "valor": 570424}, {"año": 2017, "valor": 562431}, {"año": 2018, "valor": 553571},
+    {"año": 2019, "valor": 628687}, {"año": 2020, "valor": 112548}, {"año": 2021, "valor": 258359},
+    {"año": 2022, "valor": 378288}, {"año": 2023, "valor": 474467}, {"año": 2024, "valor": 410635},
+    {"año": 2025, "valor": 414541}
+  ],
+  "taquilla_cine_colombiano_millones_cop_constantes": [
+    {"año": 2010, "valor": 13647}, {"año": 2011, "valor": 26804}, {"año": 2012, "valor": 30529},
+    {"año": 2013, "valor": 19598}, {"año": 2014, "valor": 19054}, {"año": 2015, "valor": 28215},
+    {"año": 2016, "valor": 38096}, {"año": 2017, "valor": 28292}, {"año": 2018, "valor": 17459},
+    {"año": 2019, "valor": 20123}, {"año": 2020, "valor": 7055}, {"año": 2021, "valor": 4146},
+    {"año": 2022, "valor": 10732}, {"año": 2023, "valor": 5093}, {"año": 2024, "valor": 8391},
+    {"año": 2025, "valor": 5741}
+  ],
+  "precio_promedio_boleta_cop_constantes": [
+    {"año": 2010, "valor": 10441}, {"año": 2011, "valor": 10153}, {"año": 2012, "valor": 10281},
+    {"año": 2013, "valor": 10223}, {"año": 2014, "valor": 10009}, {"año": 2015, "valor": 9506},
+    {"año": 2016, "valor": 9285}, {"año": 2017, "valor": 8983}, {"año": 2018, "valor": 8637},
+    {"año": 2019, "valor": 8599}, {"año": 2020, "valor": 8926}, {"año": 2021, "valor": 9292},
+    {"año": 2022, "valor": 8966}, {"año": 2023, "valor": 8813}, {"año": 2024, "valor": 8274},
+    {"año": 2025, "valor": 8366}
+  ],
+  "recaudo_cdc_millones_cop_constantes": [
+    {"año": 2010, "valor": 18762}, {"año": 2011, "valor": 20514}, {"año": 2012, "valor": 20330},
+    {"año": 2013, "valor": 21542}, {"año": 2014, "valor": 22818}, {"año": 2015, "valor": 27396},
+    {"año": 2016, "valor": 27872}, {"año": 2017, "valor": 28418}, {"año": 2018, "valor": 28155},
+    {"año": 2019, "valor": 32055}, {"año": 2020, "valor": 5655}, {"año": 2021, "valor": 14152},
+    {"año": 2022, "valor": 19073}, {"año": 2023, "valor": 24061}, {"año": 2024, "valor": 20798},
+    {"año": 2025, "valor": 21490}
+  ],
+  "pantallas_exhibicion": [
+    {"año": 2010, "numero": 588}, {"año": 2011, "numero": 643}, {"año": 2012, "numero": 704},
+    {"año": 2013, "numero": 790}, {"año": 2014, "numero": 870}, {"año": 2015, "numero": 935},
+    {"año": 2016, "numero": 1003}, {"año": 2017, "numero": 1081}, {"año": 2018, "numero": 1172},
+    {"año": 2019, "numero": 1227}, {"año": 2020, "numero": 1210}, {"año": 2021, "numero": 1224},
+    {"año": 2022, "numero": 1239}, {"año": 2023, "numero": 1260}, {"año": 2024, "numero": 1275},
+    {"año": 2025, "numero": 1262}
+  ],
+  "fomento_fdc_recursos_aprobados": [
+    {"año": 2004, "millones_cop": 4069, "millones_usd": 1.69, "trm": 2411},
+    {"año": 2005, "millones_cop": 7861, "millones_usd": 3.45, "trm": 2279},
+    {"año": 2006, "millones_cop": 7326, "millones_usd": 3.24, "trm": 2261},
+    {"año": 2007, "millones_cop": 6854, "millones_usd": 3.40, "trm": 2014},
+    {"año": 2008, "millones_cop": 7452, "millones_usd": 3.31, "trm": 2252},
+    {"año": 2009, "millones_cop": 8045, "millones_usd": 3.99, "trm": 2017},
+    {"año": 2010, "millones_cop": 11702, "millones_usd": 6.08, "trm": 1926},
+    {"año": 2011, "millones_cop": 17842, "millones_usd": 9.23, "trm": 1934},
+    {"año": 2012, "millones_cop": 19374, "millones_usd": 10.80, "trm": 1794},
+    {"año": 2013, "millones_cop": 16936, "millones_usd": 8.76, "trm": 1934},
+    {"año": 2014, "millones_cop": 19752, "millones_usd": 8.43, "trm": 2344},
+    {"año": 2015, "millones_cop": 24208, "millones_usd": 7.46, "trm": 3244},
+    {"año": 2016, "millones_cop": 26518, "millones_usd": 8.81, "trm": 3009},
+    {"año": 2017, "millones_cop": 27752, "millones_usd": 9.28, "trm": 2991},
+    {"año": 2018, "millones_cop": 28135, "millones_usd": 8.76, "trm": 3212},
+    {"año": 2019, "millones_cop": 33891, "millones_usd": 10.02, "trm": 3383},
+    {"año": 2020, "millones_cop": 14136, "millones_usd": 4.08, "trm": 3468},
+    {"año": 2021, "millones_cop": 13075, "millones_usd": 3.30, "trm": 3967},
+    {"año": 2022, "millones_cop": 31961, "millones_usd": 6.68, "trm": 4788},
+    {"año": 2023, "millones_cop": 38756, "millones_usd": 9.80, "trm": 3954},
+    {"año": 2024, "millones_cop": 36439, "millones_usd": 8.31, "trm": 4386},
+    {"año": 2025, "millones_cop": 32788, "millones_usd": 8.64, "trm": 3795}
+  ],
+  "estimulos_tributarios_millones_cop": [
+    {"año": 2004, "total": 505, "cert_inversion": 16, "cert_donacion": 0, "proyectos": 2},
+    {"año": 2005, "total": 1103, "cert_inversion": 49, "cert_donacion": 1, "proyectos": 6},
+    {"año": 2006, "total": 3574, "cert_inversion": 81, "cert_donacion": 2, "proyectos": 12},
+    {"año": 2007, "total": 7315, "cert_inversion": 62, "cert_donacion": 2, "proyectos": 14},
+    {"año": 2008, "total": 15716, "cert_inversion": 84, "cert_donacion": 1, "proyectos": 28},
+    {"año": 2009, "total": 18291, "cert_inversion": 111, "cert_donacion": 2, "proyectos": 29},
+    {"año": 2010, "total": 16415, "cert_inversion": 109, "cert_donacion": 1, "proyectos": 31},
+    {"año": 2011, "total": 25872, "cert_inversion": 146, "cert_donacion": 5, "proyectos": 33},
+    {"año": 2012, "total": 18481, "cert_inversion": 64, "cert_donacion": 5, "proyectos": 28},
+    {"año": 2013, "total": 20238, "cert_inversion": 121, "cert_donacion": 3, "proyectos": 27},
+    {"año": 2014, "total": 20291, "cert_inversion": 136, "cert_donacion": 3, "proyectos": 35},
+    {"año": 2015, "total": 14189, "cert_inversion": 92, "cert_donacion": 5, "proyectos": 28},
+    {"año": 2016, "total": 19284, "cert_inversion": 119, "cert_donacion": 14, "proyectos": 39},
+    {"año": 2017, "total": 27290, "cert_inversion": 142, "cert_donacion": 30, "proyectos": 42},
+    {"año": 2018, "total": 34413, "cert_inversion": 147, "cert_donacion": 15, "proyectos": 42},
+    {"año": 2019, "total": 49593, "cert_inversion": 276, "cert_donacion": 13, "proyectos": 47},
+    {"año": 2020, "total": 20407, "cert_inversion": 126, "cert_donacion": 8, "proyectos": 29},
+    {"año": 2021, "total": 32648, "cert_inversion": 220, "cert_donacion": 4, "proyectos": 39},
+    {"año": 2022, "total": 50259, "cert_inversion": 367, "cert_donacion": 6, "proyectos": 56},
+    {"año": 2023, "total": 71191, "cert_inversion": 448, "cert_donacion": 15, "proyectos": 71},
+    {"año": 2024, "total": 105475, "cert_inversion": 572, "cert_donacion": 10, "proyectos": 104},
+    {"año": 2025, "total": 151213, "cert_inversion": 902, "cert_donacion": 2, "proyectos": 144}
+  ]
+}
+```

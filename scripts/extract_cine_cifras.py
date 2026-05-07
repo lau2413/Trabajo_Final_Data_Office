@@ -113,7 +113,7 @@ Devuelve ÚNICAMENTE un JSON válido con esta estructura exacta:
 
 def configurar_gemini():
     if not GEMINI_API_KEY:
-        print("❌ ERROR: No existe la variable de entorno GEMINI_API_KEY")
+        print("ERROR: No existe la variable de entorno GEMINI_API_KEY")
         print("\nWINDOWS:   set GEMINI_API_KEY=tu_api_key")
         print("LINUX/MAC: export GEMINI_API_KEY=tu_api_key")
         sys.exit(1)
@@ -121,15 +121,15 @@ def configurar_gemini():
 
 
 def extraer_datos_pdf(client, pdf_path):
-    print(f"\n📄 Procesando: {os.path.basename(pdf_path)}")
-    print("   ⬆️ Subiendo PDF a Gemini...")
+    print(f"\n Procesando: {os.path.basename(pdf_path)}")
+    print("Subiendo PDF a Gemini...")
 
     uploaded_file = client.files.upload(
         file=pdf_path,
         config={"mime_type": "application/pdf"}
     )
 
-    print("   🤖 Extrayendo datos con Gemini Flash...")
+    print("Extrayendo datos con Gemini Flash...")
 
     response = client.models.generate_content(
         model=MODEL_NAME,
@@ -156,7 +156,7 @@ def extraer_datos_pdf(client, pdf_path):
                 break
 
     texto = texto.strip()
-    print("   ✅ Datos extraídos correctamente.")
+    print("Datos extraídos correctamente.")
     return json.loads(texto)
 
 
@@ -273,7 +273,7 @@ def guardar_csv(filas_nuevas, output_path):
 
     df_combined.to_csv(output_path, index=False, encoding="utf-8-sig")
 
-    print(f"\n💾 CSV guardado en: {output_path}")
+    print(f"\n CSV guardado en: {output_path}")
     print(
         f"   Total filas: {len(df_combined)} | "
         f"Años cubiertos: {df_combined['año'].min()} – {df_combined['año'].max()}"
@@ -291,28 +291,28 @@ def main():
 
     for pdf_path in pdfs:
         if not os.path.exists(pdf_path):
-            print(f"⚠️ Archivo no encontrado: {pdf_path}")
+            print(f"Archivo no encontrado: {pdf_path}")
             continue
 
         try:
             datos = extraer_datos_pdf(client, pdf_path)
             filas = json_a_filas(datos)
             todas_filas.extend(filas)
-            print(f"   📊 Filas generadas: {len(filas)}")
+            print(f" Filas generadas: {len(filas)}")
 
             if pdfs.index(pdf_path) < len(pdfs) - 1:
-                print("   ⏳ Esperando 5s entre archivos...")
+                print("Esperando 5s entre archivos...")
                 time.sleep(5)
 
         except json.JSONDecodeError as e:
-            print(f"❌ Error parseando JSON de {pdf_path}: {e}")
+            print(f" Error parseando JSON de {pdf_path}: {e}")
         except Exception as e:
-            print(f"❌ Error procesando {pdf_path}: {e}")
+            print(f" Error procesando {pdf_path}: {e}")
 
     if todas_filas:
         guardar_csv(todas_filas, OUTPUT_CSV)
     else:
-        print("\n⚠️ No se extrajeron datos.")
+        print("\n No se extrajeron datos.")
 
 
 if __name__ == "__main__":

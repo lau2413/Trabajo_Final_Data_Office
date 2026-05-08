@@ -19,6 +19,7 @@ def run_eda():
         return
 
     df = pd.read_csv(csv_path)
+    df = df[df['ciudad'] != 'Nacional']  # excluir fila agregada
 
     print("Shape:", df.shape)
     print("Columnas:", df.columns.tolist())
@@ -176,7 +177,13 @@ def run_eda():
     # GRÁFICO 4 — Recuperación por Ciudad (2025)
     # FIX: línea de umbral más visible (color + grosor + etiqueta directa)
     # ===========================================================
-    ciudades_2025 = df[df['año'] == 2025].sort_values('recuperacion_ciudad_pct').reset_index(drop=True)
+    base_2019 = df[df['año'] == 2019].set_index('ciudad')['espectadores_ciudad_M']
+    ciudades_2025 = df[df['año'] == 2025].copy()
+    ciudades_2025['recuperacion_ciudad_pct'] = ciudades_2025.apply(
+        lambda r: round(r['espectadores_ciudad_M'] / base_2019[r['ciudad']] * 100, 1), axis=1
+    )
+    ciudades_2025 = ciudades_2025.sort_values('recuperacion_ciudad_pct').reset_index(drop=True)
+
     if not ciudades_2025.empty:
         colores_barras = [
             '#F44336' if v < 70 else '#FF9800' if v < 80 else '#4CAF50'

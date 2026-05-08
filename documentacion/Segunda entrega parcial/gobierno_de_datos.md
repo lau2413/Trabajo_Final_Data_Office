@@ -1,91 +1,194 @@
-# Gobierno de Datos — Cine Los Andes
----
-
-## 1. Marco de Referencia
-
-El gobierno de datos se define sobre dos artefactos del proyecto:
-
-- **BPM "Gestión ágil de experiencias cinematográficas basadas en datos"**: proceso de negocio de Cine Los Andes con cinco pools (Data & Analytics, Squad de Innovación, Alianzas & Contenidos, Operaciones de Cine, Cliente).
-- **Arquitectura de datos en tres capas (ArchiMate)**: pipeline del equipo investigador que valida si la estrategia de "Experiencia Compartida" es viable, desde la ingesta del Boletín *Cine en Cifras* Ed. 30 hasta el dashboard de decisión.
-
-Los roles siguen el modelo estándar **Data Owner → Data Steward → Data Custodian**, asignados según los pools del BPM y las capas de la arquitectura.
+# 🎬 Gobierno de Datos — Cine Los Andes 🍿
 
 ---
 
-## 2. Roles de Gobierno
+# 🧩 1. Marco de Referencia
 
-### 2.1 Data Owner
+El gobierno de datos se define sobre el proceso de negocio **“Gestión ágil de experiencias cinematográficas basadas en datos”**, modelado en BPM con cinco *pools*:
 
-**Responsable:** Squad de Innovación (Marketing + Producto + Ops)
+* 📊 **Data & Analytics**
+* 💡 **Squad de Innovación**
+* 🤝 **Alianzas & Contenidos**
+* 🎥 **Operaciones de Cine**
+* 👥 **Cliente**
 
-**Justificación BPM:** Este pool toma las decisiones estratégicas sobre los datos: define hipótesis de valor, aprueba o descarta ideas en el gateway `¿Es una idea viable?`, activa campañas y ajusta estrategia al final del ciclo. Es el actor que responde por el *propósito* de los datos.
+Los roles siguen el modelo estándar:
 
-**Justificación arquitectura:** Corresponde al receptor final del Business Layer — recibe los *Insights Estratégicos para Cine Los Andes* y activa las decisiones de negocio.
+> **Data Owner → Data Steward → Data Custodian**
 
-**Responsabilidades:**
-- Aprobar qué datos se recolectan y con qué finalidad (asistencia, ocupación, satisfacción, ingresos).
-- Definir los criterios de calidad mínimos aceptables para tomar decisiones (umbral del gateway de demanda en el BPM).
-- Autorizar el acceso a los datos procesados por parte de otros roles.
-- Validar y aprobar los insights estratégicos antes de su entrega final.
-- Responder ante la organización por el uso ético y legal de los datos.
+Cada uno fue asignado según la participación y responsabilidad dentro del flujo del proceso BPM.
 
----
+Además, se establecen dos dominios de datos diferenciados:
 
-### 2.2 Data Steward
-
-**Responsable:** Pool de Data & Analytics
-
-**Justificación BPM:** Este pool opera el ciclo completo de datos: segmentación de clientes, EDA en scripts, generación de insights, actualización de dashboards y ajuste de estrategia. Es el rol que garantiza que los datos sean correctos, consistentes y útiles a lo largo del proceso.
-
-**Justificación arquitectura:** Actúa directamente sobre el Application Layer — ejecuta el Módulo de Procesamiento (.py scripts), aplica transformaciones, genera analítica visual y mantiene el Dashboard de Estrategia de Experiencia (Plotly).
-
-**Responsabilidades:**
-- Ejecutar y documentar el pipeline de extracción y estructuración de datos desde el CSV crudo.
-- Aplicar y verificar las reglas de calidad sobre los *Datos de Asistencia Procesados* (completitud, consistencia, oportunidad).
-- Mantener el linaje de datos desde la *Fuente de Datos Raw* hasta el dashboard final.
-- Documentar todas las transformaciones realizadas en los scripts `.py`.
-- Gestionar el versionado de scripts y datos en GitHub.
-- Reportar anomalías o problemas de calidad al Data Owner.
+🎟️ **Dominio de Demanda y Experiencia**
+📽️ **Dominio de Contenido y Derechos**
 
 ---
 
-### 2.3 Data Custodian
-
-**Responsable:** Pool de Operaciones de Cine / Infraestructura Técnica
-
-**Justificación BPM:** El pool de Operaciones ejecuta los eventos físicos (preparar salas, ejecutar evento) y es la fuente primaria de datos operacionales (ventas, ocupación, satisfacción del cliente). Es quien alimenta el ciclo de retroalimentación del BPM.
-
-**Justificación arquitectura:** Corresponde al Technology Layer completo — administra GitHub, Workstation Local, VS Code y el archivo `cine_en_cifras_datos.csv` como fuente primaria.
-
-**Responsabilidades:**
-- Garantizar la disponibilidad y seguridad del repositorio en GitHub (scripts y datos).
-- Administrar la Workstation Local y el entorno de ejecución de los scripts `.py`.
-- Asegurar la conectividad con los servicios externos (Internet/HTTPS).
-- Gestionar el archivo `cine_en_cifras_datos.csv` como fuente de datos primaria: respaldo, integridad y acceso controlado.
-- Recolectar los datos operacionales (ventas, ocupación, satisfacción) que alimentan el ciclo de retroalimentación del BPM.
-- Garantizar que el archivo de datos raw permanezca como solo lectura; toda transformación ocurre en notebooks separados.
+# 👑 2. Roles de Gobierno
 
 ---
 
-## 3. Matriz RACI
+## 🎟️ 2.1 Data Owner — Dominio de Demanda y Experiencia
 
-| Actividad (BPM / Pipeline) | Data Owner | Data Steward | Data Custodian |
-|---|:---:|:---:|:---:|
-| Definir qué datos recolectar y con qué fin | **A/R** | C | I |
-| Recolección de datos operacionales (evento) | I | I | **R/A** |
-| Extracción y estructuración desde CSV crudo | I | **R/A** | C |
-| Transformación y limpieza de datos | I | **R/A** | C |
-| Análisis EDA y generación de insights | C | **R/A** | I |
-| Actualización de dashboards (Plotly) | I | **R/A** | I |
-| Versionado en GitHub | I | C | **R/A** |
-| Administración de Workstation / entorno local | I | I | **R/A** |
-| Validación gateway BPM (¿demanda suficiente?) | **R/A** | C | I |
-| Entrega de insights estratégicos | **R/A** | C | I |
-| Aprobación de acceso a datos procesados | **R/A** | C | I |
+### 👤 Responsable
 
-> **R** = Responsible (ejecuta) · **A** = Accountable (responde) · **C** = Consulted · **I** = Informed
+💡 **Squad de Innovación (Marketing + Producto + Ops)**
+
+### 📝 Justificación BPM
+
+Este *pool* es el encargado de tomar decisiones estratégicas sobre los datos de demanda y experiencia del cliente.
+
+Dentro del proceso:
+
+* Define hipótesis de valor 💭
+* Evalúa la viabilidad de ideas 🔍
+* Determina cartelera y precios según demanda 🎬💰
+* Activa campañas digitales 📲
+* Ajusta la estrategia final 🔄
+
+Es el actor responsable del propósito y uso de los datos de audiencia.
+
+### 📌 Responsabilidades
+
+* ✅ Aprobar qué datos de audiencia se recolectan y con qué finalidad.
+* ✅ Definir criterios mínimos para superar el gateway **“¿Demanda suficiente?”**
+* ✅ Autorizar accesos a los datos procesados.
+* ✅ Validar insights antes de activar campañas o cambios estratégicos.
+* ✅ Garantizar el uso ético y legal de los datos.
 
 ---
 
-*Fuente primaria: Boletín Cine en Cifras Edición 30 — Proimágenes Colombia, abril 2026.*
-*Proyecto académico UPB Data Office Strategy 2026-1 — Sofía Mejía Rivas · Laura Jiménez Moreno.*
+## 📽️ 2.2 Data Owner — Dominio de Contenido y Derechos
+
+### 👤 Responsable
+
+🤝 **Pool de Alianzas & Contenidos**
+
+### 📝 Justificación BPM
+
+Este *pool* administra los datos relacionados con:
+
+* Plataformas de streaming 📺
+* Catálogos disponibles 🎞️
+* Derechos de exhibición ⚖️
+
+Como estos datos tienen implicaciones legales y contractuales, requieren un responsable específico.
+
+### 📌 Responsabilidades
+
+* ✅ Definir qué datos de contenido y derechos se registran.
+* ✅ Aprobar condiciones de consulta de datos contractuales.
+* ✅ Garantizar vigencia legal de derechos de exhibición.
+* ✅ Responder por el cumplimiento legal asociado a contratos y contenido.
+
+---
+
+## 📊 2.3 Data Steward
+
+### 👤 Responsable
+
+📊 **Pool de Data & Analytics**
+
+### 📝 Justificación BPM
+
+Este *pool* opera el ciclo completo de datos del proceso:
+
+* Segmentación de clientes 👥
+* Análisis exploratorio (EDA) 📈
+* Identificación de tendencias 🔎
+* Generación de insights 📑
+* Actualización de dashboards 📊
+
+Además, en el ciclo de retroalimentación:
+
+* Recoge datos del evento 🎟️
+* Analiza resultados 📉
+* Genera nuevos insights 🔄
+
+Es el rol que asegura que los datos sean correctos, consistentes y útiles.
+
+### 📌 Responsabilidades
+
+* ✅ Ejecutar segmentación de clientes.
+* ✅ Realizar análisis históricos mediante notebooks EDA.
+* ✅ Detectar tendencias de consumo.
+* ✅ Generar dashboards e insights estratégicos.
+* ✅ Documentar transformaciones y trazabilidad.
+* ✅ Reportar problemas de calidad a los Data Owners.
+
+---
+
+## 🛡️ 2.4 Data Custodian
+
+### 👤 Responsable
+
+🎥 **Pool de Operaciones de Cine**
+
+### 📝 Justificación BPM
+
+Este *pool* genera los datos primarios del proceso durante la ejecución del evento.
+
+Produce información sobre:
+
+* Ocupación de salas 🪑
+* Ventas 💵
+* Satisfacción del cliente ⭐
+
+Sin estos datos en origen:
+
+❌ El Data Steward no puede analizar
+❌ Los Data Owners no pueden decidir
+
+Su rol es garantizar la integridad y calidad de los datos desde la fuente.
+
+### 📌 Responsabilidades
+
+* ✅ Garantizar datos completos y confiables.
+* ✅ Asegurar entrega correcta al equipo de Data & Analytics.
+* ✅ Controlar quién registra datos operacionales.
+* ✅ Reportar inconsistencias detectadas.
+
+---
+
+# 📋 3. Matriz RACI
+
+| 🎬 Actividad BPM                  | 🎟️ DO Demanda | 📽️ DO Contenido | 📊 Data Steward | 🛡️ Data Custodian |
+| --------------------------------- | :------------: | :--------------: | :-------------: | :----------------: |
+| Definir datos de audiencia        |       A/R      |         I        |        C        |          I         |
+| Definir datos de contenido        |        I       |        A/R       |        C        |          I         |
+| Segmentación de clientes          |        I       |         I        |       R/A       |          I         |
+| Análisis histórico (EDA)          |        C       |         I        |       R/A       |          I         |
+| Identificación de tendencias      |        C       |         I        |       R/A       |          I         |
+| Generación de insights            |        C       |         I        |       R/A       |          I         |
+| Generación de ideas de eventos    |       R/A      |         C        |        C        |          I         |
+| Definición de hipótesis de valor  |       R/A      |         I        |        C        |          I         |
+| Gateway: ¿Idea viable?            |       R/A      |         I        |        C        |          I         |
+| Lanzamiento de encuesta           |       R/A      |         I        |        C        |          I         |
+| Gateway: ¿Demanda suficiente?     |       R/A      |         I        |        C        |          I         |
+| Negociación con plataformas       |        I       |        R/A       |        I        |          I         |
+| Gestión de derechos de exhibición |        I       |        R/A       |        I        |          I         |
+| Recolección de datos del evento   |        I       |         I        |        C        |         R/A        |
+| Calidad de datos en origen        |        I       |         I        |        C        |         R/A        |
+| Actualización de dashboards       |        I       |         I        |       R/A       |          C         |
+| Retroalimentación e insights      |        C       |         I        |       R/A       |          I         |
+| Ajuste de estrategia              |       R/A      |         I        |        C        |          I         |
+
+---
+
+## 🧠 Leyenda RACI
+
+* 🟢 **R = Responsible** → Ejecuta la actividad.
+* 🔵 **A = Accountable** → Responde por el resultado.
+* 🟡 **C = Consulted** → Es consultado.
+* ⚪ **I = Informed** → Es informado.
+
+> 📌 DO = Data Owner
+
+---
+
+# 🎓 Proyecto Académico
+
+✨ **UPB — Data Office Strategy 2026-1**
+👩‍💻 *Sofía Mejía Rivas*
+👩‍💻 *Laura Jiménez Moreno*

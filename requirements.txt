@@ -4,3 +4,4 @@ matplotlib
 seaborn
 google-genai
 pdfplumber
+scikit-learn

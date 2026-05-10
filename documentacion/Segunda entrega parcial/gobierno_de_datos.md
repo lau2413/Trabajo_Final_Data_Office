@@ -185,30 +185,29 @@ Su rol es garantizar la integridad y calidad de los datos desde la fuente.
 
 > 📌 DO = Data Owner
 
-# Reglas de calidad de datos
+# 📏 Reglas de calidad de datos
 * **Integridad:** No se permiten valores nulos en métricas críticas.
 * **Validez:**: Los porcentajes deben estar entre 0 y 100.
 * **Consistencia:** Los nombres de columnas deben seguir formato snake_case
 * **Unicidad:** No se permiten registros duplicados
 * **Exactitud:** Los datos numéricos deben conservar formato correcto
 
-# Estándares definidos
+# 🐍 Estándares definidos
 ## Nombres de columnas
 * snake_case
 * minúsculas
 * sin espacios
 
-## Versionamiento
+## 👩🏻‍💻 Versionamiento
 * Uso de GitHub
 * Commits descriptivos
 
-## Almacenamiento
+## ⚙️ Almacenamiento
 * /raw/: datos originales
 * /processed/: datos limpios
 
-## Trazabilidad
+## 💡 Trazabilidad
 Cada transformación debe quedar documentada en scripts reproducibles.
-
 
 ---
 

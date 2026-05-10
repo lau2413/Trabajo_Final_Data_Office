@@ -111,7 +111,7 @@ Es el rol que asegura que los datos sean correctos, consistentes y útiles.
 ### 📌 Responsabilidades
 
 * ✅ Ejecutar segmentación de clientes.
-* ✅ Realizar análisis históricos mediante notebooks EDA.
+* ✅ Realizar análisis históricos mediante scripts EDA.
 * ✅ Detectar tendencias de consumo.
 * ✅ Generar dashboards e insights estratégicos.
 * ✅ Documentar transformaciones y trazabilidad.

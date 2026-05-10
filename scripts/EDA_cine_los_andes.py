@@ -13,14 +13,10 @@ plt.rcParams['figure.dpi'] = 120
 plt.rcParams['font.family'] = 'sans-serif'
 
 def run_eda():
-    csv_path = 'cine_en_cifras_datos.csv'
-    if not os.path.exists(csv_path):
-        print(f"Error: No se encontro el archivo {csv_path}.")
-        return
+    csv_path = os.path.join('data', 'raw', 'cine_en_cifras_datos.csv')
 
     df = pd.read_csv(csv_path)
-    df = df[df['ciudad'] != 'Nacional']  # excluir fila agregada
-
+    df = df[df['ciudad'] != 'Nacional']
     print("Shape:", df.shape)
     print("Columnas:", df.columns.tolist())
     print("\n=== Tipos de datos ===")
@@ -40,7 +36,6 @@ def run_eda():
 
     # ===========================================================
     # GRÁFICO 1 — Tendencia de asistencia nacional
-    # FIX: Anotación "Pandemia COVID-19" con fondo visible
     # ===========================================================
     fig, ax = plt.subplots(figsize=(13, 5))
     colores = []
@@ -61,7 +56,6 @@ def run_eda():
     ax.axhline(val_2025, color='orange', linestyle='--', linewidth=1.2, alpha=0.7,
                label=f'2025: {val_2025:.1f}M ({val_2025/pico_2019*100:.1f}% del pico)')
 
-    # FIX: bbox con fondo blanco para que el texto de "Pandemia" sea legible
     ax.annotate(
         'Pandemia\nCOVID-19',
         xy=(2020, val_2020), xytext=(2021.1, val_2020 + 15),
@@ -95,7 +89,6 @@ def run_eda():
     p3 = mpatches.Patch(color='#FF9800', alpha=0.85, label='Recuperación parcial / Estancamiento')
     ax.legend(handles=[p1, p2, p3], loc='upper left', fontsize=9)
 
-    # Principio 6: fuente del dato
     fig.text(0.99, 0.01, 'Fuente: Proimágenes Colombia – Boletín Cine en Cifras Ed. 30',
              ha='right', fontsize=7, color='gray')
     plt.tight_layout()
@@ -105,7 +98,6 @@ def run_eda():
 
     # ===========================================================
     # GRÁFICO 2 — Precio vs Asistencia
-    # FIX: leyenda reubicada fuera del área de datos (parte inferior)
     # ===========================================================
     fig, ax1 = plt.subplots(figsize=(13, 5))
     ax2 = ax1.twinx()
@@ -121,6 +113,7 @@ def run_eda():
     ax2.set_ylabel('Precio real boleta (COP)', color='tomato', fontsize=11)
     ax1.tick_params(axis='y', labelcolor='steelblue')
     ax2.tick_params(axis='y', labelcolor='tomato')
+    ax2.set_ylim(7000, 11000)
     ax1.set_xlabel('Año')
     ax1.set_title(
         '¿Bajar el precio fue suficiente? No.\n'
@@ -129,7 +122,6 @@ def run_eda():
     )
     ax1.set_xticks(nacional['año'])
 
-    # FIX: leyenda unificada en parte inferior, fuera de la zona de líneas
     fig.legend(handles=[l1, l2], loc='lower center', ncol=2, fontsize=9,
                bbox_to_anchor=(0.5, -0.05), frameon=True)
 
@@ -140,8 +132,7 @@ def run_eda():
     plt.close()
 
     # ===========================================================
-    # GRÁFICO 3 — Estrenos vs Asistencia (sin cambios críticos,
-    # mejora menor: fuente y leyenda igual que G2)
+    # GRÁFICO 3 — Estrenos vs Asistencia
     # ===========================================================
     fig, ax1 = plt.subplots(figsize=(13, 5))
     ax2 = ax1.twinx()
@@ -175,7 +166,6 @@ def run_eda():
 
     # ===========================================================
     # GRÁFICO 4 — Recuperación por Ciudad (2025)
-    # FIX: línea de umbral más visible (color + grosor + etiqueta directa)
     # ===========================================================
     base_2019 = df[df['año'] == 2019].set_index('ciudad')['espectadores_ciudad_M']
     ciudades_2025 = df[df['año'] == 2025].copy()
@@ -197,7 +187,6 @@ def run_eda():
         ax.text(100.5, len(ciudades_2025) - 0.5, 'Nivel 2019\n(100%)',
                 va='top', fontsize=8, color='#1B5E20', fontweight='bold')
 
-        # FIX: umbral con color más oscuro, grosor mayor, etiqueta directa visible
         ax.axvline(75, color='#424242', linestyle=':', linewidth=2.2, alpha=0.9)
         ax.text(75.5, 0.3, 'Umbral piloto\n(75%)',
                 va='bottom', fontsize=8, color='#424242', fontweight='bold',
@@ -228,8 +217,6 @@ def run_eda():
 
     # ===========================================================
     # GRÁFICO 5 — Asistencia por Ciudad (serie histórica)
-    # FIX: Bogotá y Medellín — asegurar que el nombre en el CSV coincide
-    #       usando contains() para tolerancia a tildes/mayúsculas
     # ===========================================================
     fig, ax = plt.subplots(figsize=(13, 6))
 
@@ -243,13 +230,11 @@ def run_eda():
         'Barranquilla': '#C62828'
     }
 
-    # Detectar nombres reales en el DataFrame
     ciudades_en_df = df['ciudad'].unique()
     print("\nCiudades en el CSV:", ciudades_en_df)
 
     graficadas = set()
     for ciudad_real in ciudades_en_df:
-        # Buscar coincidencia en el diccionario de colores (flexible)
         color = None
         for key, c in colores_ciudades.items():
             if key.lower() in ciudad_real.lower() or ciudad_real.lower() in key.lower():
@@ -257,7 +242,6 @@ def run_eda():
                 break
         if color is None:
             continue
-        # Usar nombre normalizado para etiqueta
         label = ciudad_real
         subset = df[df['ciudad'] == ciudad_real]
         if not subset.empty and ciudad_real not in graficadas:
@@ -287,8 +271,41 @@ def run_eda():
     plt.close()
 
     # ===========================================================
-    # GRÁFICO 6 (antes 7) — Cine Colombiano: Producción vs Asistencia
-    # FIX: leyenda de la línea morada (espectadores col) unificada y visible
+    # GRÁFICO 6 — Pantallas vs Asistencia
+    # ===========================================================
+    fig, ax1 = plt.subplots(figsize=(13, 5))
+    ax2 = ax1.twinx()
+
+    ax1.fill_between(nacional['año'], nacional['espectadores_nacional_M'], alpha=0.25, color='steelblue')
+    l1, = ax1.plot(nacional['año'], nacional['espectadores_nacional_M'],
+                   marker='o', color='steelblue', linewidth=2, label='Espectadores (M)')
+    l2, = ax2.plot(nacional['año'], nacional['pantallas'],
+                   marker='s', color='#8E24AA', linewidth=2, linestyle='--',
+                   label='Pantallas')
+
+    ax1.set_ylabel('Millones de espectadores', color='steelblue', fontsize=11)
+    ax2.set_ylabel('Número de pantallas', color='#8E24AA', fontsize=11)
+    ax1.tick_params(axis='y', labelcolor='steelblue')
+    ax2.tick_params(axis='y', labelcolor='#8E24AA')
+    ax1.set_xlabel('Año')
+    ax1.set_title(
+        'La infraestructura empieza a contraerse\n'
+        'Pantallas de exhibición vs Asistencia 2010–2025',
+        fontsize=13, fontweight='bold'
+    )
+    ax1.set_xticks(nacional['año'])
+
+    fig.legend(handles=[l1, l2], loc='lower center', ncol=2, fontsize=9,
+               bbox_to_anchor=(0.5, -0.05), frameon=True)
+
+    fig.text(0.99, 0.01, 'Fuente: Proimágenes Colombia – Boletín Cine en Cifras Ed. 30',
+             ha='right', fontsize=7, color='gray')
+    plt.tight_layout()
+    plt.savefig('img/06_pantallas_vs_asistencia.png', bbox_inches='tight')
+    plt.close()
+
+    # ===========================================================
+    # GRÁFICO 7 — Cine Colombiano: Producción vs Asistencia
     # ===========================================================
     fig, ax1 = plt.subplots(figsize=(13, 6))
     ax2 = ax1.twinx()
@@ -312,7 +329,6 @@ def run_eda():
         fontsize=13, fontweight='bold'
     )
 
-    # FIX: leyenda unificada en parte inferior para que ambas series sean visibles
     p_bar = mpatches.Patch(color='#5C6BC0', alpha=0.4, label='Estrenos colombianos')
     fig.legend(handles=[p_bar, l2], loc='lower center', ncol=2, fontsize=9,
                bbox_to_anchor=(0.5, -0.04), frameon=True)
@@ -324,8 +340,7 @@ def run_eda():
     plt.close()
 
     # ===========================================================
-    # GRÁFICO 7 (antes 8) — Participación de mercado cine colombiano
-    # FIX: anotación "mínimo histórico" con bbox visible, flecha y texto legible
+    # GRÁFICO 8 — Participación de mercado cine colombiano
     # ===========================================================
     fig, ax = plt.subplots(figsize=(13, 5))
     ax.plot(nacional['año'], nacional['participacion_col_pct'],
@@ -333,13 +348,11 @@ def run_eda():
     ax.fill_between(nacional['año'], nacional['participacion_col_pct'],
                     alpha=0.18, color='purple')
 
-    # Etiqueta de valor en cada punto
     for _, row in nacional.iterrows():
         ax.text(row['año'], row['participacion_col_pct'] + 0.15,
                 f"{row['participacion_col_pct']:.1f}%",
                 ha='center', va='bottom', fontsize=7, color='purple')
 
-    # FIX: anotación "mínimo histórico" con fondo blanco y flecha clara
     min_row = nacional.loc[nacional['participacion_col_pct'].idxmin()]
     ax.annotate(
         f"Mínimo histórico\n{min_row['participacion_col_pct']:.1f}% ({int(min_row['año'])})",
@@ -359,7 +372,6 @@ def run_eda():
     )
     ax.set_xticks(nacional['año'])
 
-    # Línea de leyenda morada explícita
     linea_morada = mlines.Line2D([], [], color='purple', marker='D',
                                   linewidth=2, label='Participación cine colombiano (%)')
     ax.legend(handles=[linea_morada], loc='upper left', fontsize=9)
@@ -368,6 +380,62 @@ def run_eda():
              ha='right', fontsize=7, color='gray')
     plt.tight_layout()
     plt.savefig('img/08_participacion_colombiana.png', bbox_inches='tight')
+    plt.close()
+
+    # ===========================================================
+    # GRÁFICO 9 — Paradoja cine colombiano: estrenos vs participación taquilla
+    # ===========================================================
+    fig, ax1 = plt.subplots(figsize=(13, 5))
+    ax2 = ax1.twinx()
+
+    ax1.bar(nacional['año'], nacional['estrenos_col'],
+            alpha=0.4, color='#5C6BC0', label='Estrenos colombianos')
+    l2, = ax2.plot(nacional['año'], nacional['participacion_col_pct'],
+                   marker='o', color='red', linewidth=2, linestyle='--',
+                   label='% participación taquilla')
+
+    # Anotación pico estrenos
+    max_estrenos = nacional.loc[nacional['estrenos_col'].idxmax()]
+    ax1.annotate(
+        f"Pico estrenos\n({int(max_estrenos['estrenos_col'])} en {int(max_estrenos['año'])})",
+        xy=(max_estrenos['año'], max_estrenos['estrenos_col']),
+        xytext=(max_estrenos['año'] - 2, max_estrenos['estrenos_col'] + 5),
+        arrowprops=dict(arrowstyle='->', color='#5C6BC0', lw=1.5),
+        fontsize=8, color='#5C6BC0', fontweight='bold'
+    )
+
+    # Anotación mínimo histórico participación
+    min_part = nacional.loc[nacional['participacion_col_pct'].idxmin()]
+    ax2.annotate(
+        f"Mínimo histórico\n({min_part['participacion_col_pct']:.1f}% en {int(min_part['año'])})",
+        xy=(min_part['año'], min_part['participacion_col_pct']),
+        xytext=(min_part['año'] - 2, min_part['participacion_col_pct'] + 1.5),
+        arrowprops=dict(arrowstyle='->', color='red', lw=1.5),
+        fontsize=8, color='red', fontweight='bold',
+        bbox=dict(boxstyle='round,pad=0.2', fc='white', ec='red', alpha=0.85)
+    )
+
+    ax1.set_ylabel('Número de estrenos colombianos', color='#5C6BC0', fontsize=11)
+    ax2.set_ylabel('% participación en taquilla nacional', color='red', fontsize=11)
+    ax1.tick_params(axis='y', labelcolor='#5C6BC0')
+    ax2.tick_params(axis='y', labelcolor='red')
+    ax1.set_xlabel('Año')
+    ax1.set_xticks(nacional['año'])
+    ax1.tick_params(axis='x', rotation=45)
+    ax1.set_title(
+        'La paradoja del cine colombiano: más estrenos, menos público\n'
+        'Estrenos colombianos vs % participación en taquilla 2010–2025',
+        fontsize=13, fontweight='bold'
+    )
+
+    p_bar = mpatches.Patch(color='#5C6BC0', alpha=0.4, label='Estrenos colombianos')
+    fig.legend(handles=[p_bar, l2], loc='lower center', ncol=2, fontsize=9,
+               bbox_to_anchor=(0.5, -0.04), frameon=True)
+
+    fig.text(0.99, 0.01, 'Fuente: Proimágenes Colombia – Boletín Cine en Cifras Ed. 30',
+             ha='right', fontsize=7, color='gray')
+    plt.tight_layout()
+    plt.savefig('img/09_paradoja_colombiano.png', bbox_inches='tight')
     plt.close()
 
     print("\n=== Análisis de Cine Colombiano ===")

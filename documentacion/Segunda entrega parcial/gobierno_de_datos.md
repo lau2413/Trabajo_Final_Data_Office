@@ -211,8 +211,114 @@ Cada transformación debe quedar documentada en scripts reproducibles.
 
 ---
 
+# 📚 Catálogo y Estándares de Datos
+
+Este catálogo documenta el flujo de activos, desde la captura mediante IA hasta la disponibilidad en la capa de análisis, asegurando la integridad del proyecto **Cine Los Andes**.
+
+---
+
+## 🏗️ 1. Gobierno y Estándares Técnicos
+
+Para garantizar la interoperabilidad y confianza en los datos, se aplican los siguientes lineamientos transversales:
+
+### 📏 Reglas de Calidad (Data Quality)
+
+| Dimensión | Regla de Negocio |
+| --- | --- |
+| **Integridad** | No se permiten valores nulos en métricas críticas de asistencia o taquilla. |
+| **Validez** | Los porcentajes (market share) deben oscilar estrictamente entre 0 y 100. |
+| **Consistencia** | Uso obligatorio de `snake_case` para el nombramiento de variables. |
+| **Unicidad** | Identificadores únicos basados en la combinación `año` + `ciudad`. |
+| **Exactitud** | Los valores financieros deben conservar precisión de dos decimales. |
+
+### 🛠️ Estándares de Ingeniería
+
+* **Versionamiento:** Repositorio centralizado en **GitHub** con mensajes de commit bajo estándar *Conventional Commits*.
+* **Almacenamiento (Medallion Lite):**
+* 📁 `/raw/`: Inmutable. Datos tal cual se extrajeron.
+* 📁 `/processed/`: Datos limpios, tipados y normalizados.
+
+
+* **Trazabilidad:** Cada transformación se realiza mediante scripts de Python documentados, permitiendo la reproducibilidad total del dataset.
+
+---
+
+## 📑 2. Inventario de Activos de Datos
+
+### 2.1 Ficha Técnica del Origen (Source)
+
+* **Nombre del Activo:** Boletín "Cine en Cifras"
+* **Entidad Emisora:** Proimágenes Colombia
+* **Formato Original:** PDF (Reporte Anual)
+* **Método de Captura:** Extracción automatizada con **Gemini 1.5 Flash**
+* **Frecuencia:** Anual (Series históricas 2010 - 2025)
+
+### 2.2 Diccionario de Datos — Capa RAW
+
+**Archivo:** `data/raw/cine_en_cifras_datos.csv`
+
+| Campo | Descripción | Tipo | Ejemplo |
+| --- | --- | --- | --- |
+| `año` | Año de la estadística (2010 - 2025) | Integer | 2025 |
+| `ciudad` | Nombre de la ciudad o nivel "Nacional" | String | Medellín |
+| `espectadores_nacional_M` | Total asistentes en todo el país (Millones) | Float | 49.55 |
+| `estrenos_total` | Cantidad total de películas estrenadas | Integer | 408 |
+| `taquilla_M_COP` | Ingresos totales del país (Millones COP) | Float | 414.54 |
+| `precio_boleta_real` | Precio promedio de entrada (ajustado) | Float | 8366.0 |
+| `indice_asistencia` | Promedio de visitas al cine por habitante | Float | 0.93 |
+| `pantallas` | Número de salas/pantallas activas en el país | Integer | 1262 |
+| `recuperacion_nacional_pct` | % de volumen respecto al pico histórico nacional | Float | 67.8 |
+| `espectadores_ciudad_M` | Asistencia específica en la ciudad (Millones) | Float | 5.39 |
+| `recuperacion_ciudad_pct` | % de recuperación específico de la ciudad | Float | 75.3 |
+| `estrenos_col` | Películas colombianas estrenadas en el año | Integer | 77 |
+| `espectadores_col_M` | Asistentes a cine colombiano (Millones) | Float | 0.75 |
+| `participacion_col_pct` | % del mercado (market share) del cine nacional | Float | 1.5 |
+| `taquilla_col_M_COP` | Ingresos cine nacional (Millones COP) | Float | 5741.0 |
+
+---
+
+## ⚙️ 3. Pipeline de Procesamiento
+
+El flujo de transformación ejecutado en `ejecutar_pipeline.py` aplica la siguiente lógica secuencial:
+
+1. **Sanitización:** Normalización de cabeceras (minúsculas y eliminación de caracteres especiales).
+2. **Cast de Tipos:** Conversión forzada a `float` e `int` para evitar errores de cálculo.
+3. **Imputación:** Manejo de datos faltantes mediante la **Media Aritmética** de la serie histórica.
+4. **Limpieza:** Eliminación de duplicados y filas vacías.
+5. **Normalización:** Escalado **Min-Max [0, 1]** en variables de negocio para facilitar el modelado comparativo.
+
+---
+
+## 📈 4. Diccionario de Datos — Capa PROCESSED
+
+**Ruta:** `data/processed/cine_en_cifras_limpio.csv`
+**Propósito:** Consumo directo para Dashboards y Modelos Predictivos.
+
+| Componente | Estado Final |
+| --- | --- |
+| **Identificadores** | `año` y `ciudad` se mantienen legibles para filtrado. |
+| **Métricas** | Valores normalizados entre 0 y 1. |
+| **Calidad** | 100% de integridad (sin nulos ni redundancias). |
+
+---
+
+## 🔗 5. Linaje de Datos (Data Lineage)
+
+```mermaid
+graph LR
+    A[📄 PDF Proimágenes] --> B(🤖 Extract: Gemini Flash)
+    B --> C[📊 CSV RAW]
+    C --> D(🐍 Pipeline: CineLosAndes)
+    D --> E[✅ CSV PROCESSED]
+    E --> F[🖼️ Dashboard / ML Model]
+
+```
+
+---
+
 # 🎓 Proyecto Académico
 
 ✨ **UPB — Data Office Strategy 2026-1**
 👩‍💻 *Sofía Mejía Rivas*
 👩‍💻 *Laura Jiménez Moreno*
+

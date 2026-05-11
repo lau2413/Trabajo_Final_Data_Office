@@ -260,7 +260,7 @@ Para garantizar la interoperabilidad y confianza en los datos, se aplican los si
 | Campo | Descripción | Tipo | Ejemplo |
 | --- | --- | --- | --- |
 | `año` | Año de la estadística (2010 - 2025) | Integer | 2025 |
-| `ciudad` | Nombre de la ciudad o nivel "Nacional" | String | Medellín |
+| `ciudad` | Nombre de la ciudad  | String | Medellín |
 | `espectadores_nacional_M` | Total asistentes en todo el país (Millones) | Float | 49.55 |
 | `estrenos_total` | Cantidad total de películas estrenadas | Integer | 408 |
 | `taquilla_M_COP` | Ingresos totales del país (Millones COP) | Float | 414.54 |

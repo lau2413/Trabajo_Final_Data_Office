@@ -1,0 +1,98 @@
+{
+  "nombre_pipeline": "CineLosAndesPipeline",
+  "modo_dry_run": false,
+  "inicio": "2026-05-10T21:14:17.629659",
+  "fin": "2026-05-10T21:14:17.737234",
+  "tiempo_total_segundos": 0.107575,
+  "total_etapas": 6,
+  "etapas_completadas": 6,
+  "etapas_fallidas": 0,
+  "etapas_omitidas": 0,
+  "etapas_por_estado": {
+    "PENDIENTE": 0,
+    "EN_PROGRESO": 0,
+    "COMPLETADA": 6,
+    "FALLIDA": 0,
+    "OMITIDA": 0
+  },
+  "detalles_etapas": [
+    {
+      "nombre": "Limpiar columnas",
+      "descripcion": "Limpieza y estandarización de nombres de columnas",
+      "estado": "COMPLETADA",
+      "duracion_segundos": 0.0,
+      "filas_entrada": 96,
+      "filas_salida": 96,
+      "filas_eliminadas": 0,
+      "errores": 0,
+      "advertencias": 0,
+      "reintentos_usados": 0,
+      "error": null
+    },
+    {
+      "nombre": "Convertir tipos",
+      "descripcion": "Conversión de columnas numéricas",
+      "estado": "COMPLETADA",
+      "duracion_segundos": 0.002012,
+      "filas_entrada": 96,
+      "filas_salida": 96,
+      "filas_eliminadas": 0,
+      "errores": 0,
+      "advertencias": 0,
+      "reintentos_usados": 0,
+      "error": null
+    },
+    {
+      "nombre": "Tratar nulos",
+      "descripcion": "Imputación de valores faltantes",
+      "estado": "COMPLETADA",
+      "duracion_segundos": 0.017563,
+      "filas_entrada": 96,
+      "filas_salida": 96,
+      "filas_eliminadas": 0,
+      "errores": 0,
+      "advertencias": 0,
+      "reintentos_usados": 0,
+      "error": null
+    },
+    {
+      "nombre": "Eliminar duplicados",
+      "descripcion": "Eliminación de registros duplicados",
+      "estado": "COMPLETADA",
+      "duracion_segundos": 0.002788,
+      "filas_entrada": 96,
+      "filas_salida": 96,
+      "filas_eliminadas": 0,
+      "errores": 0,
+      "advertencias": 0,
+      "reintentos_usados": 0,
+      "error": null
+    },
+    {
+      "nombre": "Validar datos",
+      "descripcion": "Validaciones de calidad de datos",
+      "estado": "COMPLETADA",
+      "duracion_segundos": 0.002411,
+      "filas_entrada": 96,
+      "filas_salida": 96,
+      "filas_eliminadas": 0,
+      "errores": 0,
+      "advertencias": 0,
+      "reintentos_usados": 0,
+      "error": null
+    },
+    {
+      "nombre": "Normalizar datos",
+      "descripcion": "Escalamiento y normalización de variables",
+      "estado": "COMPLETADA",
+      "duracion_segundos": 0.019025,
+      "filas_entrada": 96,
+      "filas_salida": 96,
+      "filas_eliminadas": 0,
+      "errores": 0,
+      "advertencias": 0,
+      "reintentos_usados": 0,
+      "error": null
+    }
+  ]
+}

@@ -31,7 +31,7 @@ from google import genai
 
 # ── CONFIGURACIÓN ──────────────────────────────────────────────────────────────
 MODEL_NAME = "gemini-flash-latest"
-OUTPUT_CSV = "cine_en_cifras_datos.csv"
+OUTPUT_CSV = os.path.join("data", "raw", "cine_en_cifras_datos.csv")
 # ──────────────────────────────────────────────────────────────────────────────
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")

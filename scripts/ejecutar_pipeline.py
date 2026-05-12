@@ -31,6 +31,7 @@ NORMALIZED_DATASET = PROCESSED_DIR / "cine_en_cifras_limpio.csv"
 VALIDATION_REPORT = PROCESSED_DIR / "reporte_validacion.json"
 CHECKPOINT_DIR = PROJECT_ROOT / "checkpoints"
 PIPELINE_REPORT = SCRIPTS_DIR / "reporte_pipeline.json"
+USAR_CHECKPOINTS = False
 
 COLUMNAS_ESPERADAS = [
     'año',
@@ -244,7 +245,7 @@ if __name__ == "__main__":
     pipeline = PipelineDatos(
         nombre="CineLosAndesPipeline",
         log_level="WARNING",
-        checkpoint_dir=None,
+        checkpoint_dir=str(CHECKPOINT_DIR) if USAR_CHECKPOINTS else None,
         modo_dry_run=False
     )
 
@@ -313,7 +314,7 @@ if __name__ == "__main__":
 
     print("Ejecutando pipeline...")
 
-    df_final, reporte = pipeline.ejecutar(df, guardar_checkpoints=False)
+    df_final, reporte = pipeline.ejecutar(df, guardar_checkpoints=USAR_CHECKPOINTS)
 
     # GUARDAR RESULTADOS
 

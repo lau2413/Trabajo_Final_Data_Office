@@ -17,9 +17,45 @@ from pathlib import Path
 from limpieza import LimpiadorDatos
 from normalizacion import NormalizadorDatos
 from pipeline import PipelineDatos, Etapa
-from validacion import ValidadorDatos
+from validacion import ReglaValidacion, ResultadoValidacion, SeveridadError, ValidadorDatos
 
 # DEFINIR FUNCIONES DE ETAPAS
+
+SCRIPTS_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPTS_DIR.parent
+DATA_DIR = PROJECT_ROOT / "data"
+RAW_DATASET = DATA_DIR / "raw" / "cine_en_cifras_datos.csv"
+PROCESSED_DIR = DATA_DIR / "processed"
+VALIDATED_DATASET = PROCESSED_DIR / "cine_en_cifras_validado.csv"
+NORMALIZED_DATASET = PROCESSED_DIR / "cine_en_cifras_limpio.csv"
+VALIDATION_REPORT = PROCESSED_DIR / "reporte_validacion.json"
+CHECKPOINT_DIR = PROJECT_ROOT / "checkpoints"
+PIPELINE_REPORT = SCRIPTS_DIR / "reporte_pipeline.json"
+
+COLUMNAS_ESPERADAS = [
+    'año',
+    'ciudad',
+    'espectadores_nacional_m',
+    'estrenos_total',
+    'taquilla_m_cop',
+    'precio_boleta_real',
+    'indice_asistencia',
+    'pantallas',
+    'recuperacion_nacional_pct',
+    'espectadores_ciudad_m',
+    'recuperacion_ciudad_pct',
+    'estrenos_col',
+    'espectadores_col_m',
+    'participacion_col_pct',
+    'taquilla_col_m_cop',
+]
+
+COLUMNAS_NUMERICAS = [col for col in COLUMNAS_ESPERADAS if col != 'ciudad']
+COLUMNAS_PORCENTAJE = [
+    'recuperacion_nacional_pct',
+    'recuperacion_ciudad_pct',
+    'participacion_col_pct',
+]
 
 def limpiar_columnas(df):
     """Limpia y estandariza nombres de columnas."""
@@ -61,10 +97,125 @@ def eliminar_duplicados(df):
     return limpiador.limpiar_duplicados(df)
 
 
+def validar_columnas_obligatorias(df):
+    """Verifica que el dataset tenga la estructura esperada."""
+    faltantes = [col for col in COLUMNAS_ESPERADAS if col not in df.columns]
+    if faltantes:
+        raise ValueError(f"Faltan columnas obligatorias: {faltantes}")
+    return df
+
+
+def validar_clave_anio_ciudad(df, columna, columnas):
+    """Valida unicidad compuesta por año y ciudad."""
+    faltantes = [col for col in columnas if col not in df.columns]
+    if faltantes:
+        return ResultadoValidacion(
+            nombre_regla="validar_clave_anio_ciudad",
+            columna=columna,
+            paso=False,
+            errores_encontrados=len(faltantes),
+            severidad=SeveridadError.CRITICO,
+            mensaje=f"Columnas faltantes para validar unicidad: {faltantes}",
+            detalles={"columnas_faltantes": faltantes}
+        )
+
+    duplicados = df.duplicated(subset=columnas, keep=False)
+    total_duplicados = int(duplicados.sum())
+    indices_error = df[duplicados].index.tolist()
+
+    return ResultadoValidacion(
+        nombre_regla="validar_clave_anio_ciudad",
+        columna=columna,
+        paso=total_duplicados == 0,
+        errores_encontrados=total_duplicados,
+        indices_error=indices_error,
+        severidad=SeveridadError.ALTO,
+        mensaje=f"Se encontraron {total_duplicados} registros duplicados por {columnas}",
+        detalles={"columnas_clave": columnas}
+    )
+
+
+def configurar_reglas_validacion(validador):
+    """Registra las reglas de calidad del proyecto Cine Los Andes."""
+    for columna in COLUMNAS_ESPERADAS:
+        validador.agregar_regla(
+            ReglaValidacion(
+                nombre=f"{columna}_sin_nulos",
+                columna=columna,
+                funcion_validacion=validador.validar_no_nulos,
+                severidad=SeveridadError.ALTO,
+                mensaje_error=f"La columna {columna} no debe tener valores nulos"
+            )
+        )
+
+    for columna in COLUMNAS_NUMERICAS:
+        validador.agregar_regla(
+            ReglaValidacion(
+                nombre=f"{columna}_no_negativa",
+                columna=columna,
+                funcion_validacion=validador.validar_rango,
+                severidad=SeveridadError.ALTO,
+                mensaje_error=f"La columna {columna} no debe tener valores negativos",
+                parametros={"minimo": 0}
+            )
+        )
+
+    for columna in COLUMNAS_PORCENTAJE:
+        validador.agregar_regla(
+            ReglaValidacion(
+                nombre=f"{columna}_porcentaje_valido",
+                columna=columna,
+                funcion_validacion=validador.validar_rango,
+                severidad=SeveridadError.ALTO,
+                mensaje_error=f"La columna {columna} debe estar entre 0 y 100",
+                parametros={"minimo": 0, "maximo": 100}
+            )
+        )
+
+    validador.agregar_regla(
+        ReglaValidacion(
+            nombre="anio_en_rango_historico",
+            columna="año",
+            funcion_validacion=validador.validar_rango,
+            severidad=SeveridadError.ALTO,
+            mensaje_error="El año debe estar entre 2010 y 2025",
+            parametros={"minimo": 2010, "maximo": 2025}
+        )
+    )
+
+    validador.agregar_regla(
+        ReglaValidacion(
+            nombre="clave_anio_ciudad_unica",
+            columna="año_ciudad",
+            funcion_validacion=validar_clave_anio_ciudad,
+            severidad=SeveridadError.ALTO,
+            mensaje_error="No deben existir registros duplicados para la misma combinación año + ciudad",
+            parametros={"columnas": ["año", "ciudad"]}
+        )
+    )
+
+
 def validar_datos(df):
     """Valida calidad de datos."""
     validador = ValidadorDatos()
+    validar_columnas_obligatorias(df)
+    configurar_reglas_validacion(validador)
     validador.ejecutar_validaciones(df)
+    PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    validador.guardar_reporte(str(VALIDATION_REPORT), mostrar_indices=True)
+
+    errores_criticos = validador.obtener_errores_criticos()
+    if errores_criticos:
+        mensajes = [f"{error.nombre_regla}: {error.mensaje}" for error in errores_criticos]
+        raise ValueError(f"Errores críticos de validación: {mensajes}")
+
+    return df
+
+
+def guardar_datos_validados(df):
+    """Guarda una capa validada sin normalizar para dashboard y análisis descriptivo."""
+    VALIDATED_DATASET.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(VALIDATED_DATASET, index=False)
     return df
 
 
@@ -83,23 +234,17 @@ if __name__ == "__main__":
 
     # CARGAR DATOS
 
-    ruta_dataset = Path("../data/raw/cine_en_cifras_datos.csv")
-    df = pd.read_csv(ruta_dataset)
+    df = pd.read_csv(RAW_DATASET)
 
-    print(f"\n{'='*80}")
-    print("Dataset cargado correctamente")
-    print(f"{'='*80}")
-    print(f"Dimensiones: {df.shape}")
-    print(f"\nPrimeras filas:")
-    print(df.head())
+    print(f"Dataset cargado: {df.shape[0]} filas, {df.shape[1]} columnas")
 
 
     # CREAR PIPELINE
 
     pipeline = PipelineDatos(
         nombre="CineLosAndesPipeline",
-        log_level="INFO",
-        checkpoint_dir="../checkpoints",
+        log_level="WARNING",
+        checkpoint_dir=None,
         modo_dry_run=False
     )
 
@@ -144,7 +289,15 @@ if __name__ == "__main__":
             nombre="Validar datos",
             funcion=validar_datos,
             descripcion="Validaciones de calidad de datos",
-            critica=False
+            critica=True
+        )
+    )
+
+    pipeline.agregar_etapa(
+        Etapa(
+            nombre="Guardar datos validados",
+            funcion=guardar_datos_validados,
+            descripcion="Persistencia de capa validada sin normalizar"
         )
     )
 
@@ -158,30 +311,21 @@ if __name__ == "__main__":
 
     # EJECUTAR PIPELINE
 
-    print(f"\n{'='*80}")
-    print("Iniciando ejecución del pipeline")
-    print(f"{'='*80}\n")
+    print("Ejecutando pipeline...")
 
-    df_final, reporte = pipeline.ejecutar(df)
+    df_final, reporte = pipeline.ejecutar(df, guardar_checkpoints=False)
 
     # GUARDAR RESULTADOS
 
-    print(f"\n{'='*80}")
-    print("Pipeline completado exitosamente")
-    print(f"{'='*80}\n")
-
-    ruta_output = Path("../data/processed/cine_en_cifras_limpio.csv")
-    ruta_output.parent.mkdir(parents=True, exist_ok=True)
-    df_final.to_csv(ruta_output, index=False)
-    print(f"Dataset procesado guardado en: {ruta_output}")
-    print(f"  Dimensiones finales: {df_final.shape}")
+    NORMALIZED_DATASET.parent.mkdir(parents=True, exist_ok=True)
+    df_final.to_csv(NORMALIZED_DATASET, index=False)
 
     # Guardar reporte
-    pipeline.guardar_reporte("reporte_pipeline.json")
-    print(f"Reporte del pipeline guardado en: reporte_pipeline.json")
+    pipeline.guardar_reporte(str(PIPELINE_REPORT))
 
-    print(f"\nResumen del reporte:")
-    print(f"  - Etapas completadas: {reporte['etapas_completadas']}/{reporte['total_etapas']}")
-    print(f"  - Tiempo total: {reporte['tiempo_total_segundos']:.2f}s")
-    print(f"  - Filas procesadas: {len(df_final)}")
-    print(f"\n{'='*80}\n")
+    print("Pipeline completado correctamente")
+    print(f"Validado: {VALIDATED_DATASET}")
+    print(f"Normalizado: {NORMALIZED_DATASET}")
+    print(f"Reporte validacion: {VALIDATION_REPORT}")
+    print(f"Reporte pipeline: {PIPELINE_REPORT}")
+    print(f"Etapas completadas: {reporte['etapas_completadas']}/{reporte['total_etapas']}")

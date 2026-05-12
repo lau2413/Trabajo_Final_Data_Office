@@ -110,14 +110,14 @@ class PipelineDatos:
     def _configurar_logging(self, log_level: str):
         """Configura el sistema de logging."""
         logging.basicConfig(
-            level=getattr(logging, log_level.upper()),
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.StreamHandler(),
-                logging.FileHandler(f'pipeline_{self.nombre}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.log')
-            ]
+            level=logging.WARNING,
+            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
         )
         self.logger = logging.getLogger(f"Pipeline.{self.nombre}")
+        self.logger.handlers.clear()
+        self.logger.addHandler(logging.NullHandler())
+        self.logger.propagate = False
+        self.logger.setLevel(getattr(logging, log_level.upper()))
         
     def agregar_etapa(self, etapa: Etapa):
         """
@@ -389,12 +389,13 @@ class PipelineDatos:
     def _mostrar_progreso(self, etapa_actual: int, total_etapas: int, metricas: Metrica):
         """Muestra el progreso del pipeline."""
         porcentaje = (etapa_actual / total_etapas) * 100
-        barra = '█' * int(porcentaje / 5) + '░' * (20 - int(porcentaje / 5))
+        bloques_completos = int(porcentaje / 5)
+        barra = '#' * bloques_completos + '-' * (20 - bloques_completos)
         
         self.logger.info(f"\nProgreso: [{barra}] {porcentaje:.1f}%")
         self.logger.info(f"Tiempo: {metricas.duracion_segundos:.2f}s | "
-                        f"Filas: {metricas.filas_entrada} → {metricas.filas_salida} "
-                        f"({'−' if metricas.filas_eliminadas >= 0 else '+'}{abs(metricas.filas_eliminadas)})")
+                        f"Filas: {metricas.filas_entrada} -> {metricas.filas_salida} "
+                        f"({'-' if metricas.filas_eliminadas >= 0 else '+'}{abs(metricas.filas_eliminadas)})")
         
     def _generar_reporte(self) -> Dict[str, Any]:
         """

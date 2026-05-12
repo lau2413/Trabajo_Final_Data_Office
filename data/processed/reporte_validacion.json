@@ -1,0 +1,464 @@
+{
+  "resumen": {
+    "total_validaciones": 34,
+    "validaciones_exitosas": 34,
+    "validaciones_fallidas": 0,
+    "tasa_exito": "100.00%",
+    "errores_por_severidad": {
+      "CRITICO": 0,
+      "ALTO": 0,
+      "MEDIO": 0,
+      "BAJO": 0,
+      "ADVERTENCIA": 0
+    }
+  },
+  "validaciones": [
+    {
+      "regla": "año_sin_nulos",
+      "columna": "año",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "ciudad_sin_nulos",
+      "columna": "ciudad",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "espectadores_nacional_m_sin_nulos",
+      "columna": "espectadores_nacional_m",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "estrenos_total_sin_nulos",
+      "columna": "estrenos_total",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "taquilla_m_cop_sin_nulos",
+      "columna": "taquilla_m_cop",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "precio_boleta_real_sin_nulos",
+      "columna": "precio_boleta_real",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "indice_asistencia_sin_nulos",
+      "columna": "indice_asistencia",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "pantallas_sin_nulos",
+      "columna": "pantallas",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "recuperacion_nacional_pct_sin_nulos",
+      "columna": "recuperacion_nacional_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "espectadores_ciudad_m_sin_nulos",
+      "columna": "espectadores_ciudad_m",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "recuperacion_ciudad_pct_sin_nulos",
+      "columna": "recuperacion_ciudad_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "estrenos_col_sin_nulos",
+      "columna": "estrenos_col",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "espectadores_col_m_sin_nulos",
+      "columna": "espectadores_col_m",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "participacion_col_pct_sin_nulos",
+      "columna": "participacion_col_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "taquilla_col_m_cop_sin_nulos",
+      "columna": "taquilla_col_m_cop",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 valores nulos (0.00%)",
+      "detalles": {
+        "total_nulos": 0,
+        "porcentaje": 0.0
+      }
+    },
+    {
+      "regla": "año_no_negativa",
+      "columna": "año",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 2010.0,
+        "valor_max_encontrado": 2025.0
+      }
+    },
+    {
+      "regla": "espectadores_nacional_m_no_negativa",
+      "columna": "espectadores_nacional_m",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 12.61,
+        "valor_max_encontrado": 73.11
+      }
+    },
+    {
+      "regla": "estrenos_total_no_negativa",
+      "columna": "estrenos_total",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 127.0,
+        "valor_max_encontrado": 408.0
+      }
+    },
+    {
+      "regla": "taquilla_m_cop_no_negativa",
+      "columna": "taquilla_m_cop",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 112.55,
+        "valor_max_encontrado": 628.69
+      }
+    },
+    {
+      "regla": "precio_boleta_real_no_negativa",
+      "columna": "precio_boleta_real",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 8274.0,
+        "valor_max_encontrado": 10441.0
+      }
+    },
+    {
+      "regla": "indice_asistencia_no_negativa",
+      "columna": "indice_asistencia",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 0.25,
+        "valor_max_encontrado": 1.48
+      }
+    },
+    {
+      "regla": "pantallas_no_negativa",
+      "columna": "pantallas",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 588.0,
+        "valor_max_encontrado": 1275.0
+      }
+    },
+    {
+      "regla": "recuperacion_nacional_pct_no_negativa",
+      "columna": "recuperacion_nacional_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 17.2,
+        "valor_max_encontrado": 100.0
+      }
+    },
+    {
+      "regla": "espectadores_ciudad_m_no_negativa",
+      "columna": "espectadores_ciudad_m",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 0.4,
+        "valor_max_encontrado": 23.62
+      }
+    },
+    {
+      "regla": "recuperacion_ciudad_pct_no_negativa",
+      "columna": "recuperacion_ciudad_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 14.7,
+        "valor_max_encontrado": 100.0
+      }
+    },
+    {
+      "regla": "estrenos_col_no_negativa",
+      "columna": "estrenos_col",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 10.0,
+        "valor_max_encontrado": 79.0
+      }
+    },
+    {
+      "regla": "espectadores_col_m_no_negativa",
+      "columna": "espectadores_col_m",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 0.48,
+        "valor_max_encontrado": 4.79
+      }
+    },
+    {
+      "regla": "participacion_col_pct_no_negativa",
+      "columna": "participacion_col_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 1.2,
+        "valor_max_encontrado": 8.3
+      }
+    },
+    {
+      "regla": "taquilla_col_m_cop_no_negativa",
+      "columna": "taquilla_col_m_cop",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": null,
+        "valor_min_encontrado": 4146.0,
+        "valor_max_encontrado": 38096.0
+      }
+    },
+    {
+      "regla": "recuperacion_nacional_pct_porcentaje_valido",
+      "columna": "recuperacion_nacional_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0, máximo: 100)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": 100,
+        "valor_min_encontrado": 17.2,
+        "valor_max_encontrado": 100.0
+      }
+    },
+    {
+      "regla": "recuperacion_ciudad_pct_porcentaje_valido",
+      "columna": "recuperacion_ciudad_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0, máximo: 100)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": 100,
+        "valor_min_encontrado": 14.7,
+        "valor_max_encontrado": 100.0
+      }
+    },
+    {
+      "regla": "participacion_col_pct_porcentaje_valido",
+      "columna": "participacion_col_pct",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 0, máximo: 100)",
+      "detalles": {
+        "minimo": 0,
+        "maximo": 100,
+        "valor_min_encontrado": 1.2,
+        "valor_max_encontrado": 8.3
+      }
+    },
+    {
+      "regla": "anio_en_rango_historico",
+      "columna": "año",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "0 valores fuera de rango (mínimo: 2010, máximo: 2025)",
+      "detalles": {
+        "minimo": 2010,
+        "maximo": 2025,
+        "valor_min_encontrado": 2010.0,
+        "valor_max_encontrado": 2025.0
+      }
+    },
+    {
+      "regla": "clave_anio_ciudad_unica",
+      "columna": "año_ciudad",
+      "paso": true,
+      "severidad": "ALTO",
+      "errores_encontrados": 0,
+      "mensaje": "Se encontraron 0 registros duplicados por ['año', 'ciudad']",
+      "detalles": {
+        "columnas_clave": [
+          "año",
+          "ciudad"
+        ]
+      }
+    }
+  ],
+  "generado_en": "2026-05-12T09:36:52.260345"
+}

@@ -163,7 +163,7 @@ class LimpiadorDatos:
             elif estrategia == "media":
                 if pd.api.types.is_numeric_dtype(df[col]):
                     valor = df[col].mean()
-                    df[col].fillna(valor, inplace=True)
+                    df[col] = df[col].fillna(valor)
                     self.logger.info(f"Columna '{col}': nulos rellenados con media ({valor:.2f})")
                 else:
                     self.logger.warning(f"Columna '{col}' no es numérica, saltando media")
@@ -171,7 +171,7 @@ class LimpiadorDatos:
             elif estrategia == "mediana":
                 if pd.api.types.is_numeric_dtype(df[col]):
                     valor = df[col].median()
-                    df[col].fillna(valor, inplace=True)
+                    df[col] = df[col].fillna(valor)
                     self.logger.info(f"Columna '{col}': nulos rellenados con mediana ({valor:.2f})")
                 else:
                     self.logger.warning(f"Columna '{col}' no es numérica, saltando mediana")
@@ -180,21 +180,21 @@ class LimpiadorDatos:
                 moda = df[col].mode()
                 if len(moda) > 0:
                     valor = moda[0]
-                    df[col].fillna(valor, inplace=True)
+                    df[col] = df[col].fillna(valor)
                     self.logger.info(f"Columna '{col}': nulos rellenados con moda ({valor})")
                     
             elif estrategia == "ffill":
-                df[col].fillna(method='ffill', inplace=True)
+                df[col] = df[col].ffill()
                 self.logger.info(f"Columna '{col}': nulos rellenados con forward fill")
                 
             elif estrategia == "bfill":
-                df[col].fillna(method='bfill', inplace=True)
+                df[col] = df[col].bfill()
                 self.logger.info(f"Columna '{col}': nulos rellenados con backward fill")
                 
             elif estrategia == "constante":
                 if valor_constante is None:
                     raise ValueError("Debe proporcionar valor_constante para estrategia 'constante'")
-                df[col].fillna(valor_constante, inplace=True)
+                df[col] = df[col].fillna(valor_constante)
                 self.logger.info(f"Columna '{col}': nulos rellenados con valor constante ({valor_constante})")
         
         # Registrar operación

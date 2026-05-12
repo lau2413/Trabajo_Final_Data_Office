@@ -291,8 +291,11 @@ El flujo de transformación ejecutado en `ejecutar_pipeline.py` aplica la siguie
 
 ## 📈 4. Diccionario de Datos — Capa PROCESSED
 
-**Ruta:** `data/processed/cine_en_cifras_limpio.csv`
-**Propósito:** Consumo directo para Dashboards y Modelos Predictivos.
+**Ruta validada:** `data/processed/cine_en_cifras_validado.csv`
+**Propósito:** Consumo directo para dashboards descriptivos conservando unidades originales.
+
+**Ruta normalizada:** `data/processed/cine_en_cifras_limpio.csv`
+**Propósito:** Consumo para futuros modelos predictivos con variables escaladas.
 
 | Componente | Estado Final |
 | --- | --- |
@@ -309,8 +312,10 @@ graph LR
     A[📄 PDF Proimágenes] --> B(🤖 Extract: Gemini Flash)
     B --> C[📊 CSV RAW]
     C --> D(🐍 Pipeline: CineLosAndes)
-    D --> E[✅ CSV PROCESSED]
-    E --> F[🖼️ Dashboard / ML Model]
+    D --> E[✅ CSV VALIDADO]
+    E --> F[🖼️ Dashboard descriptivo]
+    E --> G[📐 Normalización Min-Max]
+    G --> H[🧠 Futuros modelos normalizados]
 
 ```
 

@@ -13,9 +13,18 @@ plt.rcParams['figure.dpi'] = 120
 plt.rcParams['font.family'] = 'sans-serif'
 
 def run_eda():
-    csv_path = os.path.join('data', 'raw', 'cine_en_cifras_datos.csv')
+    csv_path = os.path.join('data', 'processed', 'cine_en_cifras_validado.csv')
+    if not os.path.exists(csv_path):
+        csv_path = os.path.join('data', 'raw', 'cine_en_cifras_datos.csv')
 
     df = pd.read_csv(csv_path)
+    df = df.rename(columns={
+        'espectadores_nacional_m': 'espectadores_nacional_M',
+        'taquilla_m_cop': 'taquilla_M_COP',
+        'espectadores_ciudad_m': 'espectadores_ciudad_M',
+        'espectadores_col_m': 'espectadores_col_M',
+        'taquilla_col_m_cop': 'taquilla_col_M_COP',
+    })
     df = df[df['ciudad'] != 'Nacional']
     print("Shape:", df.shape)
     print("Columnas:", df.columns.tolist())

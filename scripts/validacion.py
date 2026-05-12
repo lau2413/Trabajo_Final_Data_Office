@@ -544,19 +544,29 @@ class ValidadorDatos:
         
         # Detalles de errores
         detalles_errores = []
+
+        def convertir_json(valor):
+            if isinstance(valor, np.generic):
+                return valor.item()
+            if isinstance(valor, dict):
+                return {k: convertir_json(v) for k, v in valor.items()}
+            if isinstance(valor, list):
+                return [convertir_json(v) for v in valor]
+            return valor
+
         for resultado in self.resultados:
             detalle = {
                 "regla": resultado.nombre_regla,
                 "columna": resultado.columna,
-                "paso": resultado.paso,
+                "paso": bool(resultado.paso),
                 "severidad": resultado.severidad.value,
-                "errores_encontrados": resultado.errores_encontrados,
+                "errores_encontrados": int(resultado.errores_encontrados),
                 "mensaje": resultado.mensaje,
-                "detalles": resultado.detalles
+                "detalles": convertir_json(resultado.detalles)
             }
             
             if mostrar_indices and resultado.indices_error:
-                detalle["indices_error"] = resultado.indices_error[:100]  # Limitar a 100
+                detalle["indices_error"] = convertir_json(resultado.indices_error[:100])  # Limitar a 100
             
             detalles_errores.append(detalle)
         

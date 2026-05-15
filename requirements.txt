@@ -5,3 +5,6 @@ seaborn
 google-genai
 pdfplumber
 scikit-learn
+plotly
+dash
+streamlit

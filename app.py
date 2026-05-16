@@ -697,7 +697,7 @@ with col_proj2:
         })
 
     df_tabla = pd.DataFrame(datos_tabla)
-    st.dataframe(df_tabla, width="stretch", hide_index=True)
+    st.dataframe(df_tabla, use_container_width=True, hide_index=True)
 
     st.markdown("#### Justificación de uplifts")
     st.markdown(

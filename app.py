@@ -70,30 +70,38 @@ COLORES_CIUDAD = {
 }
 PLOTLY_TEMPLATE = "plotly_dark"
 
+# ── FIX 1: Inicializar session_state para ciudades solo la primera vez ────────
+ciudades_opciones = sorted(str(c) for c in df_all["ciudad"].unique() if c != "Nacional")
+if "ciudades_sel" not in st.session_state:
+    st.session_state["ciudades_sel"] = ciudades_opciones
+
 # Sidebar - filtros
 with st.sidebar:
     st.markdown("## 🎬 Cine Los Andes")
     st.markdown("**Mercado cinematográfico Colombia 2010 - 2025**")
     st.divider()
 
-    anios_disponibles = sorted(df_all["anio"].unique())
+    anios_disponibles = sorted(int(anio) for anio in df_all["anio"].unique())
     rango_anios = st.slider(
-        "Rango de anios",
+        "Rango de años",
         min_value=int(anios_disponibles[0]),
         max_value=int(anios_disponibles[-1]),
         value=(int(anios_disponibles[0]), int(anios_disponibles[-1])),
         step=1,
+        key="filtro_rango_anios",
     )
 
-    ciudades_opciones = sorted([c for c in df_all["ciudad"].unique() if c != "Nacional"])
+    
     ciudades_sel = st.multiselect(
         "Ciudades",
         options=ciudades_opciones,
-        default=ciudades_opciones,
+        default=None,           # ← ya no sobreescribe en cada re-run
+        key="ciudades_sel",     # ← ligado a session_state["ciudades_sel"]
+        placeholder="Selecciona ciudades",
     )
 
     st.divider()
-    mostrar_covid = st.toggle("Destacar impacto COVID-19", value=True)
+    mostrar_covid = st.toggle("Destacar impacto COVID-19", value=True, key="filtro_covid")
     st.caption("Datos: Cine en Cifras Ed. 30 - Proimágenes Colombia")
 
 # Filtrado
@@ -229,7 +237,7 @@ with col_a:
         height=340,
         margin=dict(t=40, b=30),
     )
-    st.plotly_chart(fig_esp, use_container_width=True)
+    st.plotly_chart(fig_esp, width="stretch")
 
 with col_b:
     fig_taq = go.Figure()
@@ -265,13 +273,14 @@ with col_b:
         margin=dict(t=40, b=30),
         legend=dict(orientation="h", y=-0.2),
     )
-    st.plotly_chart(fig_taq, use_container_width=True)
+    st.plotly_chart(fig_taq, width="stretch")
 
 # Fila 2: Comparativo ciudades
 st.markdown(
     '<div class="section-title">Comparativo por ciudad</div>',
     unsafe_allow_html=True,
 )
+
 col_c, col_d = st.columns([3, 2])
 
 with col_c:
@@ -305,39 +314,101 @@ with col_c:
             margin=dict(t=40, b=30),
             legend=dict(orientation="h", y=-0.25),
         )
-        st.plotly_chart(fig_ciu, use_container_width=True)
+        st.plotly_chart(fig_ciu, width="stretch")
     else:
         st.info("Selecciona al menos una ciudad en el panel lateral.")
 
 with col_d:
-    anio_sel_bar = st.selectbox(
-        "Año para comparar ciudades",
-        options=sorted(df_all["anio"].unique(), reverse=True),
-        index=0,
+    ciudades_piloto = sorted(str(c) for c in df_all["ciudad"].unique() if c != "Nacional")
+    base_2019 = (
+        df_all[(df_all["anio"] == 2019) & (df_all["ciudad"].isin(ciudades_piloto))]
+        .set_index("ciudad")["espectadores_ciudad_m"]
     )
-    df_bar = df_all[
-        (df_all["anio"] == anio_sel_bar) & (df_all["ciudad"].isin(ciudades_sel))
-    ].sort_values("espectadores_ciudad_m", ascending=True)
+    df_rec_bar = df_all[
+        (df_all["anio"] == 2025) & (df_all["ciudad"].isin(ciudades_piloto))
+    ].copy()
 
-    if not df_bar.empty:
+    if not df_rec_bar.empty:
+        df_rec_bar["recuperacion_ciudad_pct"] = df_rec_bar.apply(
+            lambda row: round(row["espectadores_ciudad_m"] / base_2019[row["ciudad"]] * 100, 1)
+            if row["ciudad"] in base_2019.index and base_2019[row["ciudad"]] > 0
+            else None,
+            axis=1,
+        )
+        df_rec_bar = df_rec_bar.dropna(subset=["recuperacion_ciudad_pct"])
+        df_rec_bar = df_rec_bar.sort_values("recuperacion_ciudad_pct", ascending=True)
+        bar_colors = [
+            "#F44336" if value < 70 else "#FF9800" if value < 80 else "#4CAF50"
+            for value in df_rec_bar["recuperacion_ciudad_pct"]
+        ]
+
         fig_bar = go.Figure(
             go.Bar(
-                x=df_bar["espectadores_ciudad_m"],
-                y=df_bar["ciudad"],
+                x=df_rec_bar["recuperacion_ciudad_pct"],
+                y=df_rec_bar["ciudad"],
                 orientation="h",
-                marker_color=[COLORES_CIUDAD.get(c, "#aaa") for c in df_bar["ciudad"]],
-                text=df_bar["espectadores_ciudad_m"].apply(lambda x: f"{x:.2f}M"),
+                marker_color=bar_colors,
+                text=df_rec_bar["recuperacion_ciudad_pct"].apply(lambda x: f"{x:.1f}%"),
                 textposition="outside",
+                hovertemplate="%{y}<br>Recuperación: %{x:.1f}% vs 2019<extra></extra>",
+                showlegend=False,
+            )
+        )
+        fig_bar.add_vline(
+            x=100,
+            line_dash="dash",
+            line_color="#1B5E20",
+            annotation_text="Nivel 2019<br>(100%)",
+            annotation_position="top right",
+            annotation_font_color="#1B5E20",
+        )
+        fig_bar.add_vline(
+            x=75,
+            line_dash="dot",
+            line_color="#9ca3af",
+            annotation_text="Umbral piloto<br>(75%)",
+            annotation_position="bottom right",
+            annotation_font_color="#e5e7eb",
+        )
+        fig_bar.add_trace(
+            go.Scatter(
+                x=[None],
+                y=[None],
+                mode="markers",
+                marker=dict(size=12, color="#4CAF50"),
+                name="≥ 80% recuperación",
+            )
+        )
+        fig_bar.add_trace(
+            go.Scatter(
+                x=[None],
+                y=[None],
+                mode="markers",
+                marker=dict(size=12, color="#FF9800"),
+                name="70–80% recuperación",
+            )
+        )
+        fig_bar.add_trace(
+            go.Scatter(
+                x=[None],
+                y=[None],
+                mode="markers",
+                marker=dict(size=12, color="#F44336"),
+                name="< 70% recuperación",
             )
         )
         fig_bar.update_layout(
             template=PLOTLY_TEMPLATE,
-            title=f"Espectadores por ciudad - {anio_sel_bar}",
-            xaxis_title="Millones",
+            title="¿Dónde lanzar primero el piloto de experiencia?<br>Recuperación de asistencia por ciudad vs pico 2019 - 2025",
+            xaxis_title="% de recuperación vs pico 2019",
             height=360,
-            margin=dict(t=40, b=30, r=60),
+            margin=dict(t=70, b=30, r=64),
+            legend=dict(orientation="h", y=-0.25, x=0),
         )
-        st.plotly_chart(fig_bar, use_container_width=True)
+        fig_bar.update_xaxes(range=[0, 118])
+        st.plotly_chart(fig_bar, width="stretch")
+    else:
+        st.info("Sin datos de recuperación 2025 para las ciudades seleccionadas.")
 
 # Fila 3: Cine colombiano + Pantallas/Estrenos
 st.markdown(
@@ -360,9 +431,9 @@ with col_e:
     fig_col.add_trace(
         go.Scatter(
             x=df_nac["anio"],
-            y=df_nac["participacion_col_pct"],
+            y=df_nac["espectadores_col_m"],
             mode="lines+markers",
-            name="Participación (%)",
+            name="Espectadores cine colombiano (M)",
             line=dict(color="#f5a623", width=2.5),
             marker=dict(size=7),
         ),
@@ -370,14 +441,14 @@ with col_e:
     )
     fig_col.update_layout(
         template=PLOTLY_TEMPLATE,
-        title="Estrenos Colombianos y Participación de mercado",
+        title="Películas colombianas y espectadores",
         height=340,
         margin=dict(t=40, b=30),
         legend=dict(orientation="h", y=-0.25),
     )
-    fig_col.update_yaxes(title_text="Número de estrenos", secondary_y=False)
-    fig_col.update_yaxes(title_text="Participación (%)", secondary_y=True)
-    st.plotly_chart(fig_col, use_container_width=True)
+    fig_col.update_yaxes(title_text="Número de películas colombianas", secondary_y=False)
+    fig_col.update_yaxes(title_text="Millones de espectadores", secondary_y=True)
+    st.plotly_chart(fig_col, width="stretch")
 
 with col_f:
     fig_pant = go.Figure()
@@ -414,61 +485,58 @@ with col_f:
         margin=dict(t=40, b=30),
         legend=dict(orientation="h", y=-0.25),
     )
-    st.plotly_chart(fig_pant, use_container_width=True)
+    st.plotly_chart(fig_pant, width="stretch")
 
-# Fila 4: Recuperación post-COVID
-if mostrar_covid:
-    st.markdown(
-        '<div class="section-title">Recuperación post-COVID por ciudad</div>',
-        unsafe_allow_html=True,
+st.markdown(
+    '<div class="section-title">Participación del cine colombiano</div>',
+    unsafe_allow_html=True,
+)
+
+fig_part = go.Figure()
+fig_part.add_trace(
+    go.Scatter(
+        x=df_nac["anio"],
+        y=df_nac["participacion_col_pct"],
+        mode="lines+markers+text",
+        name="Participación cine colombiano (%)",
+        line=dict(color="#c084fc", width=3),
+        marker=dict(size=8, symbol="diamond", color="#c084fc"),
+        text=df_nac["participacion_col_pct"].apply(lambda value: f"{value:.1f}%"),
+        textposition="top center",
+        fill="tozeroy",
+        fillcolor="rgba(192,132,252,0.16)",
+        hovertemplate="%{x}<br>Participación: %{y:.1f}%<extra></extra>",
     )
+)
+min_part = df_nac.loc[df_nac["participacion_col_pct"].idxmin()]
+fig_part.add_annotation(
+    x=int(min_part["anio"]),
+    y=float(min_part["participacion_col_pct"]),
+    text=f"Mínimo histórico<br>{min_part['participacion_col_pct']:.1f}% ({int(min_part['anio'])})",
+    showarrow=True,
+    arrowhead=2,
+    arrowcolor="#c084fc",
+    ax=55,
+    ay=-55,
+    font=dict(color="#c084fc", size=12),
+    bgcolor="rgba(15,15,26,0.92)",
+    bordercolor="#c084fc",
+    borderwidth=1,
+)
+fig_part.update_layout(
+    template=PLOTLY_TEMPLATE,
+    title="Participación del Cine Colombiano en el Mercado Total<br>Evolución de la cuota de pantalla y asistencia",
+    xaxis_title="Año",
+    yaxis_title="Porcentaje de participación (%)",
+    height=360,
+    margin=dict(t=70, b=35),
+    legend=dict(orientation="h", y=-0.22),
+)
+fig_part.update_yaxes(rangemode="tozero")
+st.plotly_chart(fig_part, width="stretch")
 
-    df_rec = df_all[df_all["ciudad"].isin(ciudades_sel)].copy()
-    df_rec_pivot = df_rec.pivot_table(
-        index="anio", columns="ciudad", values="recuperacion_ciudad_pct"
-    ).reset_index()
-
-    if not df_rec_pivot.empty:
-        fig_rec = go.Figure()
-        for ciudad in ciudades_sel:
-            if ciudad in df_rec_pivot.columns:
-                fig_rec.add_trace(
-                    go.Scatter(
-                        x=df_rec_pivot["anio"],
-                        y=df_rec_pivot[ciudad],
-                        mode="lines+markers",
-                        name=ciudad,
-                        line=dict(color=COLORES_CIUDAD.get(ciudad, "#aaa"), width=2.5),
-                        marker=dict(size=7),
-                    )
-                )
-        fig_rec.add_hline(
-            y=100,
-            line_dash="dash",
-            line_color="#ffd700",
-            annotation_text="Nivel pre-pandemia (100%)",
-            annotation_position="top right",
-        )
-        fig_rec.add_vrect(
-            x0=2019.5,
-            x1=2021.5,
-            fillcolor="rgba(255,200,0,0.07)",
-            line_width=0,
-        )
-        fig_rec.update_layout(
-            template=PLOTLY_TEMPLATE,
-            title="Índice de Recuperación por Ciudad (%)",
-            xaxis_title="Año",
-            yaxis_title="Recuperación (%)",
-            height=320,
-            margin=dict(t=40, b=30),
-            legend=dict(orientation="h", y=-0.3),
-        )
-        st.plotly_chart(fig_rec, use_container_width=True)
 # ─────────────────────────────────────────────────────────────────────────────
 # BLOQUE DE PROYECCIONES 2026–2028
-# Combina Opción 2 (uplift por estrategia) + Opción 3 (CAGR diferenciado)
-# Insertar ANTES del st.divider() y st.caption() finales del dashboard
 # ─────────────────────────────────────────────────────────────────────────────
 
 import numpy as np
@@ -479,52 +547,34 @@ st.markdown(
 )
 
 # ── 1. Parámetros base ────────────────────────────────────────────────────────
-# Tomamos los valores reales 2022–2025 del dataset nacional
 df_base_proj = df_nac[df_nac["anio"].between(2022, 2025)].sort_values("anio")
 anios_base    = df_base_proj["anio"].values
 espect_base  = df_base_proj["espectadores_nacional_m"].values
 
-# CAGR real 2022→2025  (Opción 3 base)
 cagr_real = (espect_base[-1] / espect_base[0]) ** (1 / (anios_base[-1] - anios_base[0])) - 1
 
-# Año de partida para proyección
 val_2025 = float(df_nac.loc[df_nac["anio"] == 2025, "espectadores_nacional_m"].values[0]) \
            if 2025 in df_nac["anio"].values else espect_base[-1]
 
-# ── 2. Definición de escenarios (Opción 2 + 3) ────────────────────────────────
-# Cada escenario tiene un CAGR y un conjunto de uplifts acumulados por anio
-# Los uplifts están justificados en la Matriz de Convergencia (opciones D,E,F,G,H)
-
+# ── 2. Definición de escenarios ────────────────────────────────────────────────
 ESCENARIOS = {
     "Pesimista\n(sin estrategia)": {
-        "cagr": cagr_real,           # CAGR real 2022-2025 ≈ tendencia actual
-        "uplifts": {                  # sin uplift adicional
-            2026: 0.0,
-            2027: 0.0,
-            2028: 0.0,
-        },
+        "cagr": cagr_real,
+        "uplifts": {2026: 0.0, 2027: 0.0, 2028: 0.0},
         "color": "#60a5fa",
         "dash": "dot",
         "descripcion": f"CAGR histórico {cagr_real*100:.1f}% · Sin nuevas iniciativas",
     },
     "Base\n(implementación parcial)": {
-        "cagr": cagr_real + 0.03,    # +3 pp por alianzas streaming (Opción E)
-        "uplifts": {
-            2026: 0.02,              # +2%: eventos nostalgia piloto (Opción F)
-            2027: 0.03,              # +3%: talento colombiano escala (Opción G)
-            2028: 0.02,              # +2%: retención por Sprint-First (Opción H)
-        },
+        "cagr": cagr_real + 0.03,
+        "uplifts": {2026: 0.02, 2027: 0.03, 2028: 0.02},
         "color": "#f5a623",
         "dash": "dashdot",
         "descripcion": "Opciones E + F + G parciales · CAGR ajustado",
     },
     "Optimista\n(estrategia completa)": {
-        "cagr": cagr_real + 0.06,    # +6 pp por experiencia compartida (Opción D) + streaming
-        "uplifts": {
-            2026: 0.04,              # +4%: experiencia compartida full (Opción D)
-            2027: 0.05,              # +5%: eventos nostalgia + talento local
-            2028: 0.04,              # +4%: consolidación y alianzas maduras
-        },
+        "cagr": cagr_real + 0.06,
+        "uplifts": {2026: 0.04, 2027: 0.05, 2028: 0.04},
         "color": "#4ade80",
         "dash": "solid",
         "descripcion": "Opciones D+E+F+G+H completas · Mayor uplift acumulado",
@@ -539,7 +589,6 @@ for nombre, params in ESCENARIOS.items():
     valores = []
     val_ant = val_2025
     for i, anio in enumerate(ANIOS_PROY):
-        # Crecimiento base por CAGR + uplift adicional de estrategia
         val_nuevo = val_ant * (1 + params["cagr"]) * (1 + params["uplifts"][anio])
         valores.append(round(val_nuevo, 2))
         val_ant = val_nuevo
@@ -551,7 +600,6 @@ col_proj1, col_proj2 = st.columns([3, 2])
 with col_proj1:
     fig_proj = go.Figure()
 
-    # Línea histórica real (2010–2025 o rango seleccionado)
     fig_proj.add_trace(
         go.Scatter(
             x=df_nac["anio"],
@@ -563,7 +611,6 @@ with col_proj1:
         )
     )
 
-    # Banda de incertidumbre entre pesimista y optimista
     vals_pes  = resultados[list(ESCENARIOS.keys())[0]]
     vals_opt  = resultados[list(ESCENARIOS.keys())[2]]
     fig_proj.add_trace(
@@ -579,10 +626,8 @@ with col_proj1:
         )
     )
 
-    # Línea de conexión 2025→2026 (puente histórico-proyección)
     for nombre, params in ESCENARIOS.items():
         vals = resultados[nombre]
-        # Punto puente desde 2025
         x_puente = [2025] + ANIOS_PROY
         y_puente = [val_2025] + vals
 
@@ -592,18 +637,13 @@ with col_proj1:
                 y=y_puente,
                 mode="lines+markers+text",
                 name=nombre.replace("\n", " "),
-                line=dict(
-                    color=params["color"],
-                    width=2.5,
-                    dash=params["dash"],
-                ),
+                line=dict(color=params["color"], width=2.5, dash=params["dash"]),
                 marker=dict(size=8, color=params["color"]),
                 text=[f"{v:.1f}M" for v in y_puente],
                 textposition="top center",
             )
         )
 
-    # Línea vertical separando histórico y proyección
     fig_proj.add_vline(
         x=2025.5,
         line_dash="dash",
@@ -613,7 +653,6 @@ with col_proj1:
         annotation_font_color="#aaa",
     )
 
-    # Nivel pre-pandemia como referencia
     if 2019 in df_nac["anio"].values:
         val_2019 = float(df_nac.loc[df_nac["anio"] == 2019, "espectadores_nacional_m"].values[0])
         fig_proj.add_hline(
@@ -634,10 +673,9 @@ with col_proj1:
         margin=dict(t=50, b=40),
         legend=dict(orientation="h", y=-0.3),
     )
-    st.plotly_chart(fig_proj, use_container_width=True)
+    st.plotly_chart(fig_proj, width="stretch")
 
 with col_proj2:
-    # Tabla resumen de escenarios
     st.markdown("#### Supuestos por escenario")
 
     datos_tabla = []
@@ -659,21 +697,17 @@ with col_proj2:
         })
 
     df_tabla = pd.DataFrame(datos_tabla)
-    st.dataframe(
-        df_tabla,
-        use_container_width=True,
-        hide_index=True,
-    )
+    st.dataframe(df_tabla, width="stretch", hide_index=True)
 
     st.markdown("#### Justificación de uplifts")
     st.markdown(
         """
 | Opción | Uplift | Fuente |
 |--------|--------|--------|
-| D – Experiencia compartida | +4%/anio | Diferenciación vs streaming |
-| E – Streaming en sala | +3% anio 1 | Nuevos ingresos por alianza |
-| F – Eventos nostalgia | +2–5%/anio | Alta viabilidad (Pugh: 25/25) |
-| G – Talento colombiano | +3%/anio | Participación col. en riesgo (1.5%) |
+| D – Experiencia compartida | +4%/año | Diferenciación vs streaming |
+| E – Streaming en sala | +3% año 1 | Nuevos ingresos por alianza |
+| F – Eventos nostalgia | +2–5%/año | Alta viabilidad (Pugh: 25/25) |
+| G – Talento colombiano | +3%/año | Participación col. en riesgo (1.5%) |
 | H – Sprint-First | +2% retención | Agilidad organizacional |
 
 *Uplifts aplicados sobre CAGR histórico 2022–2025.*
@@ -692,7 +726,7 @@ nombres_esc = list(ESCENARIOS.keys())
 for col, idx in zip([col_k1, col_k2, col_k3], [0, 1, 2]):
     nombre = nombres_esc[idx]
     params = ESCENARIOS[nombre]
-    val_2028 = resultados[nombre][2]  # proyección final
+    val_2028 = resultados[nombre][2]
     brecha = val_2028 / val_2019_ref * 100
     color = params["color"]
     with col:
@@ -711,9 +745,8 @@ for col, idx in zip([col_k1, col_k2, col_k3], [0, 1, 2]):
 # ── 6. Proyección Cine Los Andes (market share implícito) ────────────────────
 st.markdown("#### Proyección Cine Los Andes (estimación por market share)")
 
-# Market share histórico: pico CLA 2019 / pico mercado nacional 2019
-VAL_CLA_2019 = 13.2   # millones — dato diapositivas
-market_share_cla = VAL_CLA_2019 / val_2019_ref  # ≈ 18%
+VAL_CLA_2019 = 13.2
+market_share_cla = VAL_CLA_2019 / val_2019_ref
 
 col_ms1, col_ms2, col_ms3, col_ms4 = st.columns(4)
 
@@ -761,4 +794,3 @@ st.caption(
     "Fuente: Cine en Cifras Edición 30 - Proimágenes Colombia · "
     "Dashboard desarrollado por Cine Los Andes"
 )
-

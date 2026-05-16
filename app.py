@@ -639,8 +639,8 @@ with col_proj1:
                 name=nombre.replace("\n", " "),
                 line=dict(color=params["color"], width=2.5, dash=params["dash"]),
                 marker=dict(size=8, color=params["color"]),
-                text=[f"{v:.1f}M" for v in y_puente],
-                textposition="top center",
+                text=[f"{v:.1f}M" if x == 2028 else "" for x, v in zip(x_puente, y_puente)],
+                textposition="middle right",
             )
         )
 

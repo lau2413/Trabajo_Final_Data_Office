@@ -103,10 +103,11 @@ with st.sidebar:
     st.divider()
     mostrar_covid = st.toggle("Destacar impacto COVID-19", value=True, key="filtro_covid")
     st.caption("Datos: Cine en Cifras Ed. 30 - Proimágenes Colombia")
-    st.caption("**Autoras:**")
-    st.caption("👩‍💻 Laura Jimenez")
-    st.caption("👩‍💻 Sofía Mejía")
-    st.caption("UPB · Data Office Strategy 2026-1")
+    st.markdown("---")
+    st.markdown("**Autoras:**")
+    st.markdown("👩‍💻 Laura Jimenez")
+    st.markdown("👩‍💻 Sofía Mejía")
+    st.markdown("UPB · Data Office Strategy 2026-1")
 
 # Filtrado
 df_nac = df_all[

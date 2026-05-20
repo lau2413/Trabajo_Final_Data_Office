@@ -21,13 +21,14 @@ LINUX / MAC:
 USO:
     python extract_cine_cifras.py CineEnCifras30.pdf
 """
-
+from dotenv import load_dotenv
 import sys
 import os
 import json
 import time
 import pandas as pd
 from google import genai
+load_dotenv()
 
 # ── CONFIGURACIÓN ──────────────────────────────────────────────────────────────
 MODEL_NAME = "gemini-flash-latest"

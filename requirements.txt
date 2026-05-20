@@ -5,3 +5,7 @@ seaborn
 google-genai
 pdfplumber
 scikit-learn
+plotly ==5.18.0
+dash
+streamlit ==1.45.1
+python-dotenv

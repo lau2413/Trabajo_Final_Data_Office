@@ -88,7 +88,7 @@ with st.sidebar:
         max_value=int(anios_disponibles[-1]),
         value=(int(anios_disponibles[0]), int(anios_disponibles[-1])),
         step=1,
-        key="filtro_rango_anios",
+        key="filtro_rango_años",
     )
 
     
@@ -188,7 +188,7 @@ with col4:
         f"""
     <div class="metric-card">
         <div class="metric-value">{pantallas_ult:,}</div>
-        <div class="metric-label">Pantallas activas<br>último anio</div>
+        <div class="metric-label">Pantallas activas<br>último año</div>
     </div>""",
         unsafe_allow_html=True,
     )
@@ -198,7 +198,7 @@ with col5:
         f"""
     <div class="metric-card">
         <div class="metric-value">{part_col_ult:.1f}%</div>
-        <div class="metric-label">Participación cine<br>colombiano (últ. anio)</div>
+        <div class="metric-label">Participación cine<br>colombiano (últ. año)</div>
     </div>""",
         unsafe_allow_html=True,
     )

@@ -94,6 +94,6 @@ El dashboard de Streamlit incluye:
 ## 👥 Equipo
 Proyecto desarrollado como parte del Trabajo Final de Data Office
 
-> Autoras:
-    * Laura Jiménez Moreno
-    * Sofia Mejía Rivas
+Autoras:
+* Laura Jiménez Moreno
+* Sofia Mejía Rivas

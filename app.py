@@ -707,15 +707,15 @@ with col_proj2:
     st.markdown("#### Justificación de uplifts")
     st.markdown(
         """
-| Opción | Uplift | Fuente |
-|--------|--------|--------|
-| D – Experiencia compartida | +2%/año | Diferenciación vs streaming |
-| E – Streaming en sala | +1% /año | Nuevos ingresos por alianza |
-| F – Eventos nostalgia | +2%/año | Alta viabilidad (Pugh: 25/25) |
-| G – Talento colombiano | +1%/año | Participación col. en riesgo (1.5%) |
-| H – Sprint-First | +0% directo | Agilidad organizacional |
+| Opción |  Fuente |
+|----------------|
+| D – Experiencia compartida | Diferenciación vs streaming |
+| E – Streaming en sala | Nuevos ingresos por alianza |
+| F – Eventos nostalgia | Alta viabilidad (Pugh: 25/25) |
+| G – Talento colombiano | Participación col. en riesgo (1.5%) |
+| H – Sprint-First  | Agilidad organizacional |
 
-*Uplifts aplicados sobre CAGR histórico 2022–2025.*
+*Uplifts acumulados aplicados sobre CAGR histórico 2022–2025.*
         """
     )
 

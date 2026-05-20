@@ -1,5 +1,5 @@
 # Análisis de datos de Cine Los Andes - cine Colombiano
-![Logo cine los andes](img\11_logo.png)
+![Logo cine los andes](img/11_logo.png)
 
 ## 📋 Descripción del proyecto
 Este proyecto realiza un análisis exhaustivo de datos del cine colombiano utilizando información de CineEnCifras y la base de datos de películas de Los Andes. El pipeline incluye extracción de datos desde PDF, procesamiento, análisis exploratorio de datos (EDA) y visualización interactiva a través de un dashboard en Streamlit.
@@ -63,7 +63,7 @@ python ejecutar_pipeline.py
 > Este paso procesa y limpia los datos extraídos, preparándolos para el análisis.
 
 ### 3. Acceder al dashboard de Streamlit
-![Imagen dashboard](img\10_dashboard.png)
+![Imagen dashboard](img/10_dashboard.png)
 
 Está disponible en: https://cine-los-andes-panel-estrategico.streamlit.app/
 

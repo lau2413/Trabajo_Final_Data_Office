@@ -4,6 +4,36 @@
 ## 📋 Descripción del proyecto
 Este proyecto realiza un análisis exhaustivo de datos del cine colombiano utilizando información de CineEnCifras y la base de datos de películas de Los Andes. El pipeline incluye extracción de datos desde PDF, procesamiento, análisis exploratorio de datos (EDA) y visualización interactiva a través de un dashboard en Streamlit.
 
+## 🗂️ Estructura del proyecto
+Trabajo_Final_Data_Office/
+├── .streamlit/
+│   ├── config.toml      # Configuración del despliegue del dashboard con Streamlit
+├── checkpoints/ # Contiene los checkpoints de cada paso del procesamiento de datos para retomar en caso de falla
+├── dashboard/
+│   ├── README.md      # Información sobre el despliegue del dashboard
+├── scripts/
+│   ├── extract_cine_cifras.py      # Extracción de datos del PDF
+│   ├── ejecutar_pipeline.py         # Pipeline principal de procesamiento
+│   └── EDA_cine_los_andes.py       # Dashboard interactivo en Streamlit
+|   └── limpieza.py       # Módulo de limpieza de datos
+|   └── normalizacion.py       # Módulo de normalización de datos (si se requiere para algoritmos o modelos)
+|   └── pipeline.py       # Arquitectura principal del pipeline
+|   └── reporte.json       # Reporte completo de ejecución del pipeline
+|   └── validacion.py       # Módulo de validación de datos
+|   └── backups/       # Backup de los datos crudos antes de realizar el procesamiento
+├── data/                            # Datos procesados
+|   └── processed/       # Contiene los datos limpios y datos validados, además del reporte de validación de reglas
+|   └── raw/       # Contiene los datos crudos para el procesamiento
+├── documentation/                   # Diapositivas utilizadas para el proyecto
+├── img/                   # Imágenes resultado de análisis, dashboard y logo
+├── requirements.txt                 # Dependencias del proyecto
+├── .env                            # Variables de entorno (API keys)
+├── CineEnCifras30.pdf              # Documento pdf que contiene las cifras que se usarán en la extracción
+├── app.py                            # Aplicación necesaria para la ejecución del dashboard
+├── debug_respuesta.txt               # Respuesta del debug de extracción de los datos
+├── .gitignore                        
+└── README.md                         # Documentación e instrucciones del proyecto
+
 ## 🚀 Instalación y configuración
 
 ### 1. Clonar el repositorio

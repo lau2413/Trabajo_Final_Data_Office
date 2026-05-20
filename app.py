@@ -710,10 +710,10 @@ with col_proj2:
 | Opción | Uplift | Fuente |
 |--------|--------|--------|
 | D – Experiencia compartida | +2%/año | Diferenciación vs streaming |
-| E – Streaming en sala | +1% año 1 | Nuevos ingresos por alianza |
+| E – Streaming en sala | +1% /año | Nuevos ingresos por alianza |
 | F – Eventos nostalgia | +2%/año | Alta viabilidad (Pugh: 25/25) |
 | G – Talento colombiano | +1%/año | Participación col. en riesgo (1.5%) |
-| H – Sprint-First | +0% retención | Agilidad organizacional |
+| H – Sprint-First | +0% directo | Agilidad organizacional |
 
 *Uplifts aplicados sobre CAGR histórico 2022–2025.*
         """

@@ -5,34 +5,37 @@
 Este proyecto realiza un análisis exhaustivo de datos del cine colombiano utilizando información de CineEnCifras y la base de datos de películas de Los Andes. El pipeline incluye extracción de datos desde PDF, procesamiento, análisis exploratorio de datos (EDA) y visualización interactiva a través de un dashboard en Streamlit.
 
 ## 🗂️ Estructura del proyecto
+
+```text
 Trabajo_Final_Data_Office/
-├── .streamlit/
-│   ├── config.toml      # Configuración del despliegue del dashboard con Streamlit
-├── checkpoints/ # Contiene los checkpoints de cada paso del procesamiento de datos para retomar en caso de falla
-├── dashboard/
-│   ├── README.md      # Información sobre el despliegue del dashboard
-├── scripts/
-│   ├── extract_cine_cifras.py      # Extracción de datos del PDF
-│   ├── ejecutar_pipeline.py         # Pipeline principal de procesamiento
-│   └── EDA_cine_los_andes.py       # Dashboard interactivo en Streamlit
-|   └── limpieza.py       # Módulo de limpieza de datos
-|   └── normalizacion.py       # Módulo de normalización de datos (si se requiere para algoritmos o modelos)
-|   └── pipeline.py       # Arquitectura principal del pipeline
-|   └── reporte.json       # Reporte completo de ejecución del pipeline
-|   └── validacion.py       # Módulo de validación de datos
-|   └── backups/       # Backup de los datos crudos antes de realizar el procesamiento
-├── data/                            # Datos procesados
-|   └── processed/       # Contiene los datos limpios y datos validados, además del reporte de validación de reglas
-|   └── raw/       # Contiene los datos crudos para el procesamiento
-├── documentation/                   # Diapositivas utilizadas para el proyecto
-├── img/                   # Imágenes resultado de análisis, dashboard y logo
-├── requirements.txt                 # Dependencias del proyecto
-├── .env                            # Variables de entorno (API keys)
-├── CineEnCifras30.pdf              # Documento pdf que contiene las cifras que se usarán en la extracción
-├── app.py                            # Aplicación necesaria para la ejecución del dashboard
-├── debug_respuesta.txt               # Respuesta del debug de extracción de los datos
+├── .env                              # Variables de entorno (API keys)
 ├── .gitignore                        
-└── README.md                         # Documentación e instrucciones del proyecto
+├── .streamlit/
+│   └── config.toml                   # Configuración del despliegue del dashboard con Streamlit
+├── CineEnCifras30.pdf                # Documento PDF con las cifras para la extracción
+├── README.md                         # Documentación e instrucciones principales del proyecto
+├── app.py                            # Aplicación principal para la ejecución del dashboard
+├── checkpoints/                      # Checkpoints de cada paso del procesamiento para retomar en caso de falla
+├── dashboard/
+│   └── README.md                     # Información sobre el despliegue del dashboard
+├── data/                             # Datos del proyecto
+│   ├── processed/                    # Datos limpios, validados y reporte de validación de reglas
+│   └── raw/                          # Datos crudos listos para el procesamiento
+├── debug_respuesta.txt               # Archivo de log/respuesta del debug de extracción de datos
+├── documentation/                    # Diapositivas utilizadas para la presentación del proyecto
+├── img/                              # Imágenes de análisis, capturas del dashboard y logos
+├── requirements.txt                  # Dependencias y librerías del proyecto
+└── scripts/                          # Módulos de código y automatización
+    ├── EDA_cine_los_andes.py         # Dashboard interactivo en Streamlit
+    ├── backups/                      # Backup de los datos crudos antes del procesamiento
+    ├── ejecutar_pipeline.py          # Script principal para correr todo el flujo
+    ├── extract_cine_cifras.py        # Módulo de extracción de datos del PDF
+    ├── limpieza.py                   # Módulo de limpieza de datos
+    ├── normalizacion.py              # Módulo de normalización de datos para algoritmos
+    ├── pipeline.py                   # Arquitectura y core del pipeline
+    ├── reporte.json                  # Reporte completo de la última ejecución del pipeline
+    └── validacion.py                 # Módulo de validación de reglas de datos
+```
 
 ## 🚀 Instalación y configuración
 

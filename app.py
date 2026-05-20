@@ -571,7 +571,7 @@ ESCENARIOS = {
         "descripcion": f"CAGR histórico {cagr_real*100:.1f}% · Sin nuevas iniciativas",
     },
     "Base\n(implementación parcial)": {
-        "cagr": cagr_real + 0.03,
+        "cagr": cagr_real + 0.04,
         "uplifts": {2026: 0.02, 2027: 0.03, 2028: 0.02},
         "color": "#f5a623",
         "dash": "dashdot",
@@ -709,11 +709,11 @@ with col_proj2:
         """
 | Opción | Uplift | Fuente |
 |--------|--------|--------|
-| D – Experiencia compartida | +4%/año | Diferenciación vs streaming |
-| E – Streaming en sala | +3% año 1 | Nuevos ingresos por alianza |
-| F – Eventos nostalgia | +2–5%/año | Alta viabilidad (Pugh: 25/25) |
-| G – Talento colombiano | +3%/año | Participación col. en riesgo (1.5%) |
-| H – Sprint-First | +2% retención | Agilidad organizacional |
+| D – Experiencia compartida | +2%/año | Diferenciación vs streaming |
+| E – Streaming en sala | +1% año 1 | Nuevos ingresos por alianza |
+| F – Eventos nostalgia | +2%/año | Alta viabilidad (Pugh: 25/25) |
+| G – Talento colombiano | +1%/año | Participación col. en riesgo (1.5%) |
+| H – Sprint-First | +0% retención | Agilidad organizacional |
 
 *Uplifts aplicados sobre CAGR histórico 2022–2025.*
         """

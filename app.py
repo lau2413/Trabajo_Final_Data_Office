@@ -708,14 +708,14 @@ with col_proj2:
     st.markdown(
         """
 | Opción | Fuente |
-|--------|--------|
+|---|---|
 | D – Experiencia compartida | Diferenciación vs streaming |
 | E – Streaming en sala | Nuevos ingresos por alianza |
 | F – Eventos nostalgia | Alta viabilidad (Pugh: 25/25) |
 | G – Talento colombiano | Participación col. en riesgo (1.5%) |
-| H – Sprint-First  | Agilidad organizacional |
+| H – Sprint-First | Agilidad organizacional |
 
-*Uplifts  aplicados sobre CAGR histórico 2022–2025.*
+*Uplifts aplicados sobre CAGR histórico 2022–2025.*
         """
     )
 
